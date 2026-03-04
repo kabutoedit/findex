@@ -42,7 +42,7 @@ export default function SourcesPage() {
 		}
 	}
 
-	const sourceIcons: Record<string, JSX.Element> = {
+	const sourceIcons: Record<string, React.ReactNode> = {
 		telegram: <TelegramIcon />,
 		threads: <ThreadsIcon />,
 		tiktok: <TikTokIcon />,
