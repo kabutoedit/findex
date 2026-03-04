@@ -13,6 +13,10 @@
 		line-height: 100%;
 		border: none;
 		height: 30px;
+
+		&:hover {
+			border-bottom: 1px solid #273242;
+		}
 	}
 
 	.active {

@@ -15,8 +15,6 @@ type DateRangeOrSingle =
 	| undefined
 
 export default function Home() {
-	const [isShow, setIsShow] = useState(true)
-
 	const [search, setSearch] = useState('')
 	const [selectedRange, setSelectedRange] = useState<DateRangeOrSingle>()
 
@@ -31,7 +29,7 @@ export default function Home() {
 					<Calendar selectedRange={selectedRange} onChange={setSelectedRange} />
 
 					<div style={{ display: 'flex', gap: '10px' }}>
-						{isShow && <DeleteBtn onSuccess={handleRefresh} />}
+						<DeleteBtn onSuccess={handleRefresh} />
 						<ExportExel />
 					</div>
 				</div>

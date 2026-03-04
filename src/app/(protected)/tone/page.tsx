@@ -15,8 +15,6 @@ type DateRangeOrSingle =
 	| undefined
 
 export default function ToneFilters() {
-	const [isShow, setIsShow] = useState(true)
-
 	const [search, setSearch] = useState('')
 	const [selectedRange, setSelectedRange] = useState<DateRangeOrSingle>()
 	const [filterTone, setFilterTone] = useState<
@@ -62,7 +60,7 @@ export default function ToneFilters() {
 								<NegativeSVG /> Негатив
 							</button>
 						</div>
-						{isShow && <DeleteBtn onSuccess={handleRefresh} />}
+						<DeleteBtn onSuccess={handleRefresh} />
 					</div>
 				</div>
 

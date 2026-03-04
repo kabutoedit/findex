@@ -33,4 +33,42 @@
 			color: #273242;
 		}
 	}
+
+	.sourceTabs {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px;
+
+		.tab {
+			text-transform: capitalize;
+			display: flex;
+			flex-direction: row-reverse;
+			justify-content: center;
+			align-items: center;
+			height: 43px;
+			border-radius: 5px;
+			gap: 5px;
+
+			border: 1px solid #d5d6d999;
+			box-shadow: 2px 3px 4.7px 0px #00000008;
+			background: #ffffff;
+		}
+
+		.activeTab {
+			text-transform: capitalize;
+
+			display: flex;
+			flex-direction: row-reverse;
+
+			justify-content: center;
+			align-items: center;
+			height: 43px;
+			border-radius: 5px;
+			gap: 5px;
+
+			border: 1px solid #d5d6d999;
+			box-shadow: 2px 3px 4.7px 0px #00000008;
+			background: #ffffff;
+		}
+	}
 }

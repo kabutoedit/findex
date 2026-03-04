@@ -54,6 +54,8 @@ export function Message({
 		null
 	)
 
+	console.log(messages)
+
 	const closeModal = () => setSelectedMessage(null)
 
 	const TEXT_LIMIT = 120

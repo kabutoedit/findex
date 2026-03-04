@@ -5,6 +5,21 @@ import Calendar from '@/src/components/ui/calendar/Calendar'
 import Filters from '@/src/components/filters/Filters'
 import { useState, useMemo } from 'react'
 
+import ExportExel from '@/src/components/ui/exportExel/ExportExel'
+import DeleteBtn from '@/src/components/ui/deleteBtn/DeleteBtn'
+
+import {
+	TelegramIcon,
+	ThreadsIcon,
+	TikTokIcon,
+	InstagramIcon,
+	MineconomIcon,
+	RutubeIcon,
+	OkIcon,
+	VkIcon,
+	YouTubeIcon,
+} from '@/public/icons'
+
 export default function SourcesPage() {
 	const [search, setSearch] = useState('')
 	const [selectedRange, setSelectedRange] = useState<any>()
@@ -12,6 +27,8 @@ export default function SourcesPage() {
 
 	const [allSources, setAllSources] = useState<string[]>([])
 	const [activeSource, setActiveSource] = useState<string | null>(null)
+
+	const handleRefresh = () => setRefreshTrigger(prev => prev + 1)
 
 	const formatSourceName = (name: string) => {
 		return name.replace(/\.com|\.gov\.kg|\.org|\.ru/gi, '')
@@ -25,23 +42,46 @@ export default function SourcesPage() {
 		}
 	}
 
+	const sourceIcons: Record<string, JSX.Element> = {
+		telegram: <TelegramIcon />,
+		threads: <ThreadsIcon />,
+		tiktok: <TikTokIcon />,
+		instagram: <InstagramIcon />,
+		mineconom: <MineconomIcon />,
+		rutube: <RutubeIcon />,
+		ok: <OkIcon />,
+		vk: <VkIcon />,
+		youtube: <YouTubeIcon />,
+	}
+
 	return (
 		<div className={styles.Page}>
 			<div className={styles.left}>
 				<div className={styles.upside}>
 					<Calendar selectedRange={selectedRange} onChange={setSelectedRange} />
+
+					<div style={{ display: 'flex', gap: '10px' }}>
+						<DeleteBtn onSuccess={handleRefresh} />
+						<ExportExel />
+					</div>
 				</div>
 
 				<div className={styles.sourceTabs}>
-					{allSources.map(src => (
-						<button
-							key={src}
-							className={activeSource === src ? styles.activeTab : styles.tab}
-							onClick={() => setActiveSource(src === activeSource ? null : src)}
-						>
-							{formatSourceName(src)}
-						</button>
-					))}
+					{allSources.map(src => {
+						const key = formatSourceName(src).toLowerCase()
+						return (
+							<button
+								key={src}
+								className={activeSource === src ? styles.activeTab : styles.tab}
+								onClick={() =>
+									setActiveSource(src === activeSource ? null : src)
+								}
+							>
+								{sourceIcons[key] || null}
+								{formatSourceName(src)}
+							</button>
+						)
+					})}
 				</div>
 
 				<Message
