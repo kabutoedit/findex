@@ -8,7 +8,6 @@
 	justify-content: space-between;
 	align-items: center;
 	box-sizing: border-box;
-	margin-bottom: 15px;
 	cursor: pointer;
 
 	p {
@@ -28,6 +27,7 @@
 	background-color: #fff;
 	padding: 36px 56px 40px 56px;
 	box-sizing: border-box;
+	left: 330px;
 
 	:global(.rdp-root) {
 		--rdp-accent-color: #000;
@@ -100,4 +100,11 @@
 	position: fixed;
 	inset: 0;
 	z-index: 1000;
+}
+
+.modalOverlay {
+	position: fixed;
+	inset: 0;
+	z-index: 999;
+	background: transparent;
 }

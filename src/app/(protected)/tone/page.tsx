@@ -1,6 +1,6 @@
 'use client'
 import { Message } from '@/src/components/message/Message'
-import styles from './tone.module.scss'
+import styles from '../style.module.scss'
 import Calendar from '@/src/components/ui/calendar/Calendar'
 import DeleteBtn from '@/src/components/ui/deleteBtn/DeleteBtn'
 import Filters from '@/src/components/filters/Filters'
@@ -28,47 +28,42 @@ export default function ToneFilters() {
 	const handleRefresh = () => setRefreshTrigger(prev => prev + 1)
 
 	return (
-		<div className={styles.TonePage}>
+		<div className={styles.Page}>
 			<div className={styles.left}>
 				<div className={styles.upside}>
 					<Calendar selectedRange={selectedRange} onChange={setSelectedRange} />
 
-					<div className={styles.toneFilters}>
-						<button
-							className={`${styles.btn} ${
-								filterTone === 'позитив' ? styles.active : ''
-							}`}
-							onClick={() => setFilterTone('позитив')}
-						>
-							<PositiveSVG /> Позитив
-						</button>
+					<div style={{ display: 'flex', gap: '10px', alignItems: 'end' }}>
+						<div className={styles.toneFilters}>
+							<button
+								className={`${styles.btn} ${
+									filterTone === 'позитив' ? styles.active : ''
+								}`}
+								onClick={() => setFilterTone('позитив')}
+							>
+								<PositiveSVG /> Позитив
+							</button>
 
-						<button
-							className={`${styles.btn} ${
-								filterTone === 'нейтрально' ? styles.active : ''
-							}`}
-							onClick={() => setFilterTone('нейтрально')}
-						>
-							<NeutralSVG /> Нейтрально
-						</button>
+							<button
+								className={`${styles.btn} ${
+									filterTone === 'нейтрально' ? styles.active : ''
+								}`}
+								onClick={() => setFilterTone('нейтрально')}
+							>
+								<NeutralSVG /> Нейтрально
+							</button>
 
-						<button
-							className={`${styles.btn} ${
-								filterTone === 'негатив' ? styles.active : ''
-							}`}
-							onClick={() => setFilterTone('негатив')}
-						>
-							<NegativeSVG /> Негатив
-						</button>
-
-						<button
-							className={styles.resetBtn}
-							onClick={() => setFilterTone(null)}
-						>
-							Сбросить
-						</button>
+							<button
+								className={`${styles.btn} ${
+									filterTone === 'негатив' ? styles.active : ''
+								}`}
+								onClick={() => setFilterTone('негатив')}
+							>
+								<NegativeSVG /> Негатив
+							</button>
+						</div>
+						{isShow && <DeleteBtn onSuccess={handleRefresh} />}
 					</div>
-					{isShow && <DeleteBtn onSuccess={handleRefresh} />}
 				</div>
 
 				<Message

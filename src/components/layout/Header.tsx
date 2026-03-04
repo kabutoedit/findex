@@ -2,15 +2,17 @@
 import { useState } from 'react'
 import styles from './Header.module.scss'
 import ProfileNavBar from '../ui/profileNavBar/ProfileNavBar'
+import { useLockBodyScroll } from '@/src/hooks/useLockBodyScroll'
 
 export default function Header() {
-	const [isModalOpen, setIsModalOpen] = useState(false)
+	const [isOpen, setIsOpen] = useState(false)
+	useLockBodyScroll(isOpen)
 
-	const toggleModal = () => setIsModalOpen(!isModalOpen)
+	const toggleModal = () => setIsOpen(!isOpen)
 
 	return (
 		<header className={styles.header}>
-			<div className={styles.logo}>
+			<a href='' className={styles.logo}>
 				<svg
 					width='181'
 					height='46'
@@ -31,7 +33,7 @@ export default function Header() {
 						fill='white'
 					/>
 				</svg>
-			</div>
+			</a>
 
 			<div className={styles.profile} onClick={toggleModal}>
 				<img
@@ -41,7 +43,7 @@ export default function Header() {
 				<h3 className={styles.name}>Анастасия</h3>
 			</div>
 
-			{isModalOpen && <ProfileNavBar toggleModal={toggleModal} />}
+			{isOpen && <ProfileNavBar toggleModal={toggleModal} />}
 		</header>
 	)
 }

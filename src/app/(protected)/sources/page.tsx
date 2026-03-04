@@ -1,6 +1,6 @@
 'use client'
 import { Message } from '@/src/components/message/Message'
-import styles from './sources.module.scss'
+import styles from '../style.module.scss'
 import Calendar from '@/src/components/ui/calendar/Calendar'
 import Filters from '@/src/components/filters/Filters'
 import { useState, useMemo } from 'react'
@@ -26,7 +26,7 @@ export default function SourcesPage() {
 	}
 
 	return (
-		<div className={styles.SourcesPage}>
+		<div className={styles.Page}>
 			<div className={styles.left}>
 				<div className={styles.upside}>
 					<Calendar selectedRange={selectedRange} onChange={setSelectedRange} />

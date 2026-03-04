@@ -28,7 +28,6 @@
 
 	label {
 		position: relative;
-		// display: flex;
 
 		input {
 			box-sizing: border-box;
@@ -46,9 +45,16 @@
 			}
 		}
 
-		svg {
+		.icon {
 			position: absolute;
 			left: 406px;
+			top: 50%;
+			transform: translate(-0%, -50%);
+		}
+
+		.iconSmall {
+			position: absolute;
+			left: 412px;
 			top: 50%;
 			transform: translate(-0%, -50%);
 		}

@@ -4,13 +4,27 @@
 	margin-bottom: 10px;
 
 	.btn {
-		height: 20px;
+		text-transform: capitalize;
+
+		background-color: transparent;
+		color: #273242;
+		font-weight: 500;
+		font-size: 16px;
+		line-height: 100%;
 		border: none;
-		background-color: #f4f4f4;
+		height: 30px;
 	}
 
 	.active {
-		border-radius: 20px;
-		background-color: #e3e0e0;
+		text-transform: capitalize;
+
+		background-color: transparent;
+		color: #273242;
+		font-weight: 500;
+		font-size: 16px;
+		line-height: 100%;
+		border: none;
+		height: 30px;
+		border-bottom: 1px solid #273242;
 	}
 }

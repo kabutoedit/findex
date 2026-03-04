@@ -5,35 +5,16 @@ import { useMessagesStore } from '../../store/useMessages.store'
 import { useState, useEffect, useMemo } from 'react'
 import { api } from '@/src/lib/api'
 import BaseFilters from '../ui/baseFilters/BaseFilters'
+import { MessageType } from '../../types/types'
+import ToneDropdown from '../ui/toneDropdown/ToneDropdown'
 import {
 	AudienceIcon,
 	RepostIcon,
 	LikeIcon,
 	EyeIcon,
 	CommentIcon,
-	PositiveSVG,
-	NeutralSVG,
-	NegativeSVG,
 } from '../../../public/icons'
 import DetailsModal from '../ui/detailsModal/DetailsModal'
-
-type MessageType = {
-	audience?: number
-	published_at?: string | null
-	source?: string | null
-	author?: string | null
-	author_url?: string
-	engagement?: number
-	text?: string | null
-	url?: string | null
-	tone?: 'позитив' | 'нейтрально' | 'негатив' | null
-	external_id: string
-	reposts?: number
-	likes?: number
-	comments?: number
-	views?: number
-	message_type?: string
-}
 
 type DateRangeOrSingle =
 	| {
@@ -67,7 +48,6 @@ export function Message({
 	const [messages, setMessages] = useState<MessageType[]>([])
 	const [loading, setLoading] = useState(false)
 	const [error, setError] = useState('')
-	const [expandedIds, setExpandedIds] = useState<string[]>([])
 	const [sortBy, setSortBy] = useState<string>('date')
 	const [currentPage, setCurrentPage] = useState(1)
 	const [selectedMessage, setSelectedMessage] = useState<MessageType | null>(
@@ -240,43 +220,29 @@ export function Message({
 		}
 	}, [selectedMessage])
 
-	const handleChangeTone = async (
-		externalId: string,
-		currentTone: MessageType['tone']
-	) => {
-		const tones: MessageType['tone'][] = ['позитив', 'нейтрально', 'негатив']
-		const currentIndex = tones.indexOf(currentTone || 'нейтрально')
-		const nextTone = tones[(currentIndex + 1) % tones.length]
-
-		try {
-			setMessages(prev =>
-				prev.map(msg =>
-					msg.external_id === externalId ? { ...msg, tone: nextTone } : msg
-				)
-			)
-
-			await api.patch(`/api/messages/${externalId}`, { tone: nextTone })
-		} catch (err) {
-			console.error('Ошибка при смене тональности', err)
-			setError('Не удалось сохранить изменение')
-		}
-	}
-
 	return (
 		<>
 			{error && <p>{error}</p>}
 			<BaseFilters onChange={setSortBy} />
-
-			{loading && <p>Загрузка...</p>}
-
 			<div className={styles.list}>
 				{currentItems.map(msg => {
 					const isChecked = selectedIds.includes(msg.external_id)
-					const isExpanded = expandedIds.includes(msg.external_id)
 					const text = msg.text || ''
 
 					return (
-						<div key={msg.external_id} className={styles.card}>
+						<div
+							key={msg.external_id}
+							className={styles.card}
+							style={{
+								opacity: selectedIds.length === 0 ? 1 : isChecked ? 1 : 0.8,
+								boxShadow:
+									selectedIds.length === 0
+										? 'none'
+										: isChecked
+										? 'none'
+										: '-5px 6px 8.5px 0px #2E436E0D',
+							}}
+						>
 							<div className={styles.left}>
 								<input
 									type='checkbox'
@@ -285,7 +251,6 @@ export function Message({
 									onChange={() => toggle(msg.external_id)}
 								/>
 							</div>
-
 							<div className={styles.content}>
 								<div className={styles.header}>
 									<img
@@ -355,19 +320,20 @@ export function Message({
 									</div>
 								</div>
 							</div>
-
 							<div className={`${styles.status} ${styles[msg.tone || '']}`} />
 
-							<div
-								className={styles.emotion}
-								onClick={() => handleChangeTone(msg.external_id, msg.tone)}
-								style={{ cursor: 'pointer' }}
-								title='Нажмите, чтобы изменить тональность'
-							>
-								{msg.tone === 'позитив' && <PositiveSVG />}
-								{msg.tone === 'нейтрально' && <NeutralSVG />}
-								{msg.tone === 'негатив' && <NegativeSVG />}
-								{!msg.tone && <NeutralSVG />}
+							<div className={styles.emotion}>
+								<ToneDropdown
+									tone={msg.tone}
+									externalId={msg.external_id}
+									onToneChange={(id, newTone) =>
+										setMessages(prev =>
+											prev.map(m =>
+												m.external_id === id ? { ...m, tone: newTone } : m
+											)
+										)
+									}
+								/>
 							</div>
 						</div>
 					)

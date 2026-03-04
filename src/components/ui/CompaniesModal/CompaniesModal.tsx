@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import styles from './CompaniesModal.module.scss'
 import { api } from '@/src/lib/api'
+import { useLockBodyScroll } from '@/src/hooks/useLockBodyScroll'
 
 interface Company {
 	id: number
@@ -13,6 +14,8 @@ export default function companiesModal() {
 	const [companies, setCompanies] = useState<Company[]>([])
 	const [loading, setLoading] = useState(false)
 	const [error, setError] = useState('')
+
+	useLockBodyScroll(isOpen)
 
 	useEffect(() => {
 		const fetchCompanies = async () => {
@@ -35,7 +38,7 @@ export default function companiesModal() {
 
 	return (
 		<div className={styles.companiesModal}>
-			<div className={styles.currentCompany}>
+			<div className={styles.currentCompany} onClick={() => setIsOpen(!isOpen)}>
 				<div className={styles.company}>
 					{loading && <p>Загрузка...</p>}
 					{error && <p>{error}</p>}
@@ -48,7 +51,6 @@ export default function companiesModal() {
 					viewBox='0 0 7 12'
 					fill='none'
 					xmlns='http://www.w3.org/2000/svg'
-					onClick={() => setIsOpen(!isOpen)}
 				>
 					<g clipPath='url(#clip0_8_1097)'>
 						<path
@@ -66,16 +68,18 @@ export default function companiesModal() {
 				</svg>
 			</div>
 			{isOpen && !loading && (
-				<div className={styles.companies}>
-					{companies.length > 0 &&
-						companies.map(company => {
-							return (
-								<div key={company.id} className={styles.company}>
-									<h3>{company.name}</h3>
-									<p>{company.description}</p>
-								</div>
-							)
-						})}
+				<div className={styles.modalOverlay} onClick={() => setIsOpen(!isOpen)}>
+					<div className={styles.companies} onClick={e => e.stopPropagation()}>
+						{companies.length > 0 &&
+							companies.map(company => {
+								return (
+									<div key={company.id} className={styles.company}>
+										<h3>{company.name}</h3>
+										<p>{company.description}</p>
+									</div>
+								)
+							})}
+					</div>
 				</div>
 			)}
 		</div>

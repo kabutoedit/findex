@@ -4,6 +4,7 @@ import { DayPicker, DateRange } from 'react-day-picker'
 import { ru } from 'date-fns/locale'
 import { useState } from 'react'
 import styles from './calendar.module.scss'
+import { useLockBodyScroll } from '@/src/hooks/useLockBodyScroll'
 
 export type DateRangeOrSingle =
 	| {
@@ -19,6 +20,8 @@ type CalendarProps = {
 
 export default function Calendar({ selectedRange, onChange }: CalendarProps) {
 	const [isOpen, setIsOpen] = useState(false)
+
+	useLockBodyScroll(isOpen)
 
 	const addTwoMonths = (date: Date) => {
 		const newDate = new Date(date)
@@ -68,15 +71,17 @@ export default function Calendar({ selectedRange, onChange }: CalendarProps) {
 			</div>
 
 			{isOpen && (
-				<div className={styles.select} onClick={e => e.stopPropagation()}>
-					<DayPicker
-						locale={ru}
-						mode='range'
-						selected={selectedRange}
-						onSelect={handleSelect}
-						numberOfMonths={2}
-						pagedNavigation
-					/>
+				<div className={styles.modalOverlay} onClick={() => setIsOpen(!isOpen)}>
+					<div className={styles.select} onClick={e => e.stopPropagation()}>
+						<DayPicker
+							locale={ru}
+							mode='range'
+							selected={selectedRange}
+							onSelect={handleSelect}
+							numberOfMonths={2}
+							pagedNavigation
+						/>
+					</div>
 				</div>
 			)}
 		</div>

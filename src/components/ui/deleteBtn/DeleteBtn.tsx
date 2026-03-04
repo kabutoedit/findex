@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import styles from './DeleteBtn.module.scss'
 import { useMessagesStore } from '@/src/store/useMessages.store'
+import { useLockBodyScroll } from '@/src/hooks/useLockBodyScroll'
 
 type DeleteBtnProps = {
 	onSuccess: () => void
@@ -12,6 +13,8 @@ export default function DeleteBtn({ onSuccess }: DeleteBtnProps) {
 	const selectedIds = useMessagesStore(state => state.selectedIds)
 	const deleteMessages = useMessagesStore(state => state.deleteMessages)
 	const loading = useMessagesStore(state => state.loading)
+
+	useLockBodyScroll(isOpen)
 	const handleDelete = async () => {
 		const accessToken = localStorage.getItem('access')
 		if (!accessToken) return
@@ -52,10 +55,10 @@ export default function DeleteBtn({ onSuccess }: DeleteBtnProps) {
 						className={styles.deleteModal}
 						onClick={e => e.stopPropagation()}
 					>
-						<h5>Удалить сообщения?</h5>
+						<h5>Хотите удалить сообщения?</h5>
 						<p>
-							Подтвердите удаление. После удаления восстановление будет
-							невозможно.
+							Подтвердите удаление сообщения . После удаления она больше не
+							будет доступна для использования.
 						</p>
 
 						<div className={styles.btns}>

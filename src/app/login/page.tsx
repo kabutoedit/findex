@@ -13,6 +13,7 @@ export default function LoginPage() {
 	const [userName, setUserName] = useState('')
 	const [password, setPassword] = useState('')
 	const [error, setError] = useState('')
+	console.log(error)
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
@@ -36,7 +37,7 @@ export default function LoginPage() {
 			router.push('/messages')
 			setError('')
 		} catch (error: any) {
-			if (error.response?.status === 401) {
+			if (error.response?.status === 401 || error.response?.status === 400) {
 				setError('Неверный логин или пароль')
 			} else {
 				setError('Ошибка сервера')
@@ -61,7 +62,7 @@ export default function LoginPage() {
 			<label className={styles.field}>
 				<input
 					type='text'
-					placeholder='User name'
+					placeholder='Username'
 					value={userName}
 					onChange={handleEmailChange}
 				/>
@@ -88,7 +89,7 @@ export default function LoginPage() {
 					onChange={handlePasswordChange}
 				/>
 				<svg
-					className={styles.icon}
+					className={styles.iconSmall}
 					width='18'
 					height='18'
 					viewBox='0 0 18 18'

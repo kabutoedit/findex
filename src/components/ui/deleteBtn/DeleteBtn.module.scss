@@ -1,6 +1,6 @@
 .btn {
-	width: 105px;
-	height: 44px;
+	height: 30px;
+	border-radius: 6px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -11,6 +11,7 @@
 	border: 1px solid rgba(255, 255, 255, 1);
 	box-shadow: 2px 3px 4.7px 0px rgba(52, 84, 125, 0.03);
 	color: #fff;
+	padding: 0 10px;
 }
 
 .overlay {
