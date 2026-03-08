@@ -73,6 +73,11 @@
 	transform: rotate(45deg);
 }
 
+.btns {
+	display: flex;
+	gap: 15px;
+}
+
 .btn {
 	width: 135px;
 	height: 40px;
@@ -84,4 +89,9 @@
 	letter-spacing: 1%;
 	border: none;
 	color: #273242;
+}
+
+.active {
+	background: #273242;
+	color: #fff;
 }

@@ -7,16 +7,8 @@ import Filters from '@/src/components/filters/Filters'
 import { useState } from 'react'
 import ExportExel from '@/src/components/ui/exportExel/ExportExel'
 
-type DateRangeOrSingle =
-	| {
-			from: Date
-			to?: Date
-	  }
-	| undefined
-
 export default function Home() {
 	const [search, setSearch] = useState('')
-	const [selectedRange, setSelectedRange] = useState<DateRangeOrSingle>()
 
 	const [refreshTrigger, setRefreshTrigger] = useState(0)
 
@@ -26,19 +18,15 @@ export default function Home() {
 		<div className={styles.Page}>
 			<div className={styles.left}>
 				<div className={styles.upside}>
-					<Calendar selectedRange={selectedRange} onChange={setSelectedRange} />
+					<Calendar />
 
-					<div style={{ display: 'flex', gap: '10px' }}>
-						<DeleteBtn onSuccess={handleRefresh} />
+					<div style={{ display: 'flex', gap: '10px', alignItems: 'end' }}>
 						<ExportExel />
+						<DeleteBtn onSuccess={handleRefresh} />
 					</div>
 				</div>
 
-				<Message
-					search={search}
-					selectedRange={selectedRange}
-					refreshTrigger={refreshTrigger}
-				/>
+				<Message search={search} refreshTrigger={refreshTrigger} />
 			</div>
 
 			<Filters search={search} setSearch={setSearch} />

@@ -8,12 +8,10 @@ import { api } from '@/src/lib/api'
 
 export default function LoginPage() {
 	const login = useAuthStore(s => s.login)
-	const logout = useAuthStore(s => s.logout)
 	const router = useRouter()
 	const [userName, setUserName] = useState('')
 	const [password, setPassword] = useState('')
 	const [error, setError] = useState('')
-	console.log(error)
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()

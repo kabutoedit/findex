@@ -1,52 +1,16 @@
-import { useState, ChangeEvent } from 'react'
+'use client'
+
+import { useState, useEffect } from 'react'
 import Search from '../ui/search/Search'
 import styles from './Filters.module.scss'
+import { api } from '@/src/lib/api'
+import { useFiltersStore } from '../../store/useMessagesFilters.store'
 
-interface Filters {
-	countries: {
-		kyrgyzstan: boolean
-		russia: boolean
-	}
-	tonality: {
-		positive: boolean
-		neutral: boolean
-		negative: boolean
-	}
-	sources: {
-		instagram: boolean
-		facebook: boolean
-		telegram: boolean
-		vk: boolean
-		max: boolean
-	}
-	sourceTypes: {
-		socialNetworks: boolean
-		video: boolean
-		messengerChats: boolean
-		messengerChannels: boolean
-		microblogs: boolean
-		onlineMedia: boolean
-	}
-}
-
-const initialFilters: Filters = {
-	countries: { kyrgyzstan: false, russia: false },
-	tonality: { positive: false, neutral: false, negative: false },
-	sources: {
-		instagram: false,
-		facebook: false,
-		telegram: false,
-		vk: false,
-		max: false,
-	},
-	sourceTypes: {
-		socialNetworks: false,
-		video: false,
-		messengerChats: false,
-		messengerChannels: false,
-		microblogs: false,
-		onlineMedia: false,
-	},
+interface FilterMetadata {
+	countries: string[]
+	tones: string[]
+	sources: string[]
+	source_types: string[]
 }
 
 type FiltersProps = {
@@ -55,140 +19,147 @@ type FiltersProps = {
 }
 
 export default function Filters({ search, setSearch }: FiltersProps) {
-	const [filters, setFilters] = useState<Filters>(initialFilters)
+	const { brandID, setFilters, resetFilters } = useFiltersStore()
 
-	const handleCheckboxChange = (
-		group: keyof Filters,
-		key: string,
-		e: ChangeEvent<HTMLInputElement>
+	const [metadata, setMetadata] = useState<FilterMetadata>({
+		countries: [],
+		tones: [],
+		sources: [],
+		source_types: [],
+	})
+
+	const [loading, setLoading] = useState(false)
+
+	const [selected, setSelected] = useState({
+		countries: new Set<string>(),
+		tone: new Set<string>(),
+		source: new Set<string>(),
+		sourceType: new Set<string>(),
+	})
+
+	useEffect(() => {
+		if (!brandID) return
+
+		const fetchFilters = async () => {
+			try {
+				setLoading(true)
+
+				const { data } = await api.get('/api/messages/filters', {
+					params: { brand_id: brandID },
+				})
+
+				setMetadata(data)
+
+				setSelected({
+					countries: new Set(),
+					tone: new Set(),
+					source: new Set(),
+					sourceType: new Set(),
+				})
+
+				resetFilters()
+			} catch (err: any) {
+				console.error('Ошибка загрузки фильтров', err.response?.data)
+			} finally {
+				setLoading(false)
+			}
+		}
+
+		fetchFilters()
+	}, [brandID, resetFilters])
+
+	const toggle = (group: keyof typeof selected, value: string) => {
+		setSelected(prev => {
+			const next = new Set(prev[group])
+
+			if (next.has(value)) next.delete(value)
+			else next.add(value)
+
+			return { ...prev, [group]: next }
+		})
+	}
+
+	const applyFilters = () => {
+		setFilters({
+			countries: [...selected.countries],
+			tone: [...selected.tone],
+			source: [...selected.source],
+			sourceType: [...selected.sourceType],
+		})
+	}
+
+	const reset = () => {
+		setSelected({
+			countries: new Set(),
+			tone: new Set(),
+			source: new Set(),
+			sourceType: new Set(),
+		})
+
+		resetFilters()
+	}
+
+	const hasActive =
+		!!selected.countries.size ||
+		!!selected.tone.size ||
+		!!selected.source.size ||
+		!!selected.sourceType.size
+
+	const renderGroup = (
+		title: string,
+		items: string[],
+		key: keyof typeof selected
 	) => {
-		setFilters(prev => ({
-			...prev,
-			[group]: {
-				...prev[group],
-				[key]: e.target.checked,
-			},
-		}))
+		if (!items.length) return null
+
+		return (
+			<div className={styles.group}>
+				<h3 className={styles.title}>{title}</h3>
+
+				{items.map(item => (
+					<label key={item} className={styles.label}>
+						<input
+							type='checkbox'
+							className={styles.checkbox}
+							checked={selected[key].has(item)}
+							onChange={() => toggle(key, item)}
+						/>
+						{item}
+					</label>
+				))}
+			</div>
+		)
 	}
 
-	const handleReset = () => {
-		setFilters(initialFilters)
-	}
-
-	const handleSubmit = () => {
-		console.log('Применить фильтры:', filters)
-	}
+	if (loading) return <div>Загрузка фильтров...</div>
 
 	return (
 		<div className={styles.filters}>
 			<Search search={search} setSearch={setSearch} />
 
 			<div className={styles.panel}>
-				<div className={styles.group}>
-					<h3 className={styles.title}>Страны</h3>
+				{renderGroup('Страны', metadata.countries, 'countries')}
+				{renderGroup('Тональность', metadata.tones, 'tone')}
+				{renderGroup('Источники', metadata.sources, 'source')}
+				{renderGroup('Типы источников', metadata.source_types, 'sourceType')}
 
-					<label className={styles.label}>
-						<input
-							type='checkbox'
-							checked={filters.countries.kyrgyzstan}
-							onChange={e => handleCheckboxChange('countries', 'kyrgyzstan', e)}
-							className={styles.checkbox}
-						/>
-						Кыргызстан
-					</label>
+				<div className={styles.btns}>
+					<button
+						className={`${styles.btn} ${hasActive ? styles.active : ''}`}
+						onClick={applyFilters}
+					>
+						Отфильтровать
+					</button>
 
-					<label className={styles.label}>
-						<input
-							type='checkbox'
-							checked={filters.countries.russia}
-							onChange={e => handleCheckboxChange('countries', 'russia', e)}
-							className={styles.checkbox}
-						/>
-						Россия
-					</label>
+					{hasActive && (
+						<button
+							className={`${styles.btn} ${styles.active}`}
+							onClick={reset}
+						>
+							Сбросить
+						</button>
+					)}
 				</div>
-
-				<div className={styles.group}>
-					<h3 className={styles.title}>Тональность</h3>
-
-					<label className={styles.label}>
-						<input
-							type='checkbox'
-							checked={filters.tonality.positive}
-							onChange={e => handleCheckboxChange('tonality', 'positive', e)}
-							className={styles.checkbox}
-						/>
-						Позитив
-					</label>
-
-					<label className={styles.label}>
-						<input
-							type='checkbox'
-							checked={filters.tonality.neutral}
-							onChange={e => handleCheckboxChange('tonality', 'neutral', e)}
-							className={styles.checkbox}
-						/>
-						Нейтрально
-					</label>
-
-					<label className={styles.label}>
-						<input
-							type='checkbox'
-							checked={filters.tonality.negative}
-							onChange={e => handleCheckboxChange('tonality', 'negative', e)}
-							className={styles.checkbox}
-						/>
-						Негатив
-					</label>
-				</div>
-
-				<div className={styles.group}>
-					<h3 className={styles.title}>Источники</h3>
-
-					{['instagram', 'facebook', 'telegram', 'vk', 'max'].map(src => (
-						<label key={src} className={styles.label}>
-							<input
-								type='checkbox'
-								checked={filters.sources[src as keyof typeof filters.sources]}
-								onChange={e => handleCheckboxChange('sources', src, e)}
-								className={styles.checkbox}
-							/>
-							{src === 'max' ? 'Max.ru' : `${src}.com`}
-						</label>
-					))}
-				</div>
-
-				<div className={styles.group}>
-					<h3 className={styles.title}>Типы источников</h3>
-
-					{[
-						{ key: 'socialNetworks', label: 'Соцсети' },
-						{ key: 'video', label: 'Видео' },
-						{ key: 'messengerChats', label: 'Мессенджеры чаты' },
-						{ key: 'messengerChannels', label: 'Мессенджеры каналы' },
-						{ key: 'microblogs', label: 'Микроблоги' },
-						{ key: 'onlineMedia', label: 'Онлайн-СМИ' },
-					].map(({ key, label }) => (
-						<label key={key} className={styles.label}>
-							<input
-								type='checkbox'
-								checked={
-									filters.sourceTypes[key as keyof typeof filters.sourceTypes]
-								}
-								onChange={e => handleCheckboxChange('sourceTypes', key, e)}
-								className={styles.checkbox}
-							/>
-							{label}
-						</label>
-					))}
-				</div>
-
-				<button
-					className={`${styles.btn} ${styles.apply}`}
-					onClick={handleSubmit}
-				>
-					Отфильтровать
-				</button>
 			</div>
 		</div>
 	)

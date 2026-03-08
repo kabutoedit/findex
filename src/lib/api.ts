@@ -2,7 +2,7 @@ import axios from 'axios'
 import router from 'next/router'
 
 export const api = axios.create({
-	baseURL: 'https://staff.findex.asia',
+	baseURL: process.env.NEXT_PUBLIC_API_URL,
 	headers: {
 		'Content-Type': 'application/json',
 	},
@@ -10,6 +10,7 @@ export const api = axios.create({
 
 api.interceptors.request.use(config => {
 	const token = localStorage.getItem('access')
+
 	if (token) {
 		config.headers.Authorization = `Bearer ${token}`
 	}
@@ -25,6 +26,7 @@ api.interceptors.response.use(
 			originalRequest._retry = true
 
 			const refresh = localStorage.getItem('refresh')
+
 			if (!refresh) {
 				localStorage.removeItem('access')
 				router.push('/login')

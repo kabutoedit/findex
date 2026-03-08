@@ -7,16 +7,8 @@ import Filters from '@/src/components/filters/Filters'
 import { useState } from 'react'
 import { PositiveSVG, NegativeSVG, NeutralSVG } from '@/public/icons'
 
-type DateRangeOrSingle =
-	| {
-			from: Date
-			to?: Date
-	  }
-	| undefined
-
 export default function ToneFilters() {
 	const [search, setSearch] = useState('')
-	const [selectedRange, setSelectedRange] = useState<DateRangeOrSingle>()
 	const [filterTone, setFilterTone] = useState<
 		'позитив' | 'негатив' | 'нейтрально' | null
 	>(null)
@@ -29,7 +21,7 @@ export default function ToneFilters() {
 		<div className={styles.Page}>
 			<div className={styles.left}>
 				<div className={styles.upside}>
-					<Calendar selectedRange={selectedRange} onChange={setSelectedRange} />
+					<Calendar />
 
 					<div style={{ display: 'flex', gap: '10px', alignItems: 'end' }}>
 						<div className={styles.toneFilters}>
@@ -66,7 +58,6 @@ export default function ToneFilters() {
 
 				<Message
 					search={search}
-					selectedRange={selectedRange}
 					refreshTrigger={0}
 					forceTone={filterTone || undefined}
 				/>

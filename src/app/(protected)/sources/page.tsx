@@ -22,7 +22,6 @@ import {
 
 export default function SourcesPage() {
 	const [search, setSearch] = useState('')
-	const [selectedRange, setSelectedRange] = useState<any>()
 	const [refreshTrigger, setRefreshTrigger] = useState(0)
 
 	const [allSources, setAllSources] = useState<string[]>([])
@@ -58,11 +57,11 @@ export default function SourcesPage() {
 		<div className={styles.Page}>
 			<div className={styles.left}>
 				<div className={styles.upside}>
-					<Calendar selectedRange={selectedRange} onChange={setSelectedRange} />
+					<Calendar />
 
-					<div style={{ display: 'flex', gap: '10px' }}>
-						<DeleteBtn onSuccess={handleRefresh} />
+					<div style={{ display: 'flex', gap: '10px', alignItems: 'end' }}>
 						<ExportExel />
+						<DeleteBtn onSuccess={handleRefresh} />
 					</div>
 				</div>
 
@@ -86,7 +85,6 @@ export default function SourcesPage() {
 
 				<Message
 					search={search}
-					selectedRange={selectedRange}
 					refreshTrigger={refreshTrigger}
 					forceSource={activeSource || undefined}
 					onDataLoaded={handleDataLoaded}

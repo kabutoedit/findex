@@ -11,8 +11,6 @@ interface MessagesState {
 	deleteMessages: (accessToken: string) => Promise<void>
 }
 
-const API_BASE_URL = api.defaults.baseURL
-
 export const useMessagesStore = create<MessagesState>((set, get) => ({
 	selectedIds: [],
 	loading: false,
@@ -35,30 +33,27 @@ export const useMessagesStore = create<MessagesState>((set, get) => ({
 		try {
 			set({ loading: true, error: null })
 
-			const res = await fetch(`${API_BASE_URL}/api/messages/bulk-delete`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${accessToken}`,
-				},
-				body: JSON.stringify({
+			const { data } = await api.post(
+				'/api/messages/bulk-delete',
+				{
 					external_ids: selectedIds,
-				}),
-			})
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			)
 
-			const data = await res.json()
-
-			if (!res.ok) {
-				throw data
-			}
-
-			// если удалилось хоть что-то — чистим выбор
 			if (data.deleted > 0) {
 				set({ selectedIds: [] })
 			}
 		} catch (err: any) {
 			set({
-				error: err?.error?.detail || err?.detail || 'Ошибка удаления сообщений',
+				error:
+					err?.response?.data?.error?.detail ||
+					err?.response?.data?.detail ||
+					'Ошибка удаления сообщений',
 			})
 		} finally {
 			set({ loading: false })

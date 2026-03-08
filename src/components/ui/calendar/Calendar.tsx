@@ -5,6 +5,7 @@ import { ru } from 'date-fns/locale'
 import { useState } from 'react'
 import styles from './calendar.module.scss'
 import { useLockBodyScroll } from '@/src/hooks/useLockBodyScroll'
+import { useFiltersStore } from '../../../store/useMessagesFilters.store'
 
 export type DateRangeOrSingle =
 	| {
@@ -12,47 +13,39 @@ export type DateRangeOrSingle =
 			to?: Date
 	  }
 	| undefined
-
-type CalendarProps = {
-	selectedRange: DateRangeOrSingle
-	onChange: (range: DateRangeOrSingle) => void
-}
-
-export default function Calendar({ selectedRange, onChange }: CalendarProps) {
+export default function Calendar() {
 	const [isOpen, setIsOpen] = useState(false)
+	const setDateRange = useFiltersStore(state => state.setDateRange)
+	const dateRange = useFiltersStore(state => state.dateRange)
 
 	useLockBodyScroll(isOpen)
 
-	const addTwoMonths = (date: Date) => {
-		const newDate = new Date(date)
-		newDate.setMonth(newDate.getMonth() + 2)
-		return newDate
-	}
-
 	const handleSelect = (selected: DateRange | undefined) => {
 		if (!selected?.from) {
-			onChange(undefined)
+			setDateRange({ from: null, to: null })
 			return
 		}
 
-		if (selected.from && selected.to) {
-			const maxDate = addTwoMonths(selected.from)
-			if (selected.to > maxDate) return
-		}
+		const stripTimeStart = (d: Date) =>
+			new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0, 0)
 
-		const range: DateRangeOrSingle = { from: selected.from, to: selected.to }
-		onChange(range)
+		const stripTimeEnd = (d: Date) =>
+			new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59, 999)
+
+		const from = stripTimeStart(selected.from)
+		const to = selected.to
+			? stripTimeEnd(selected.to)
+			: stripTimeEnd(selected.from)
+
+		setDateRange({ from, to })
 	}
-
 	return (
 		<div className={styles.calendarWrapper}>
 			<div className={styles.calendar} onClick={() => setIsOpen(!isOpen)}>
 				<p>
-					{selectedRange?.from
-						? `${selectedRange.from.toLocaleDateString('ru-RU')} - ${
-								selectedRange.to
-									? selectedRange.to.toLocaleDateString('ru-RU')
-									: '...'
+					{dateRange?.from
+						? `${dateRange.from.toLocaleDateString('ru-RU')} - ${
+								dateRange.to ? dateRange.to.toLocaleDateString('ru-RU') : '...'
 						  }`
 						: 'Выберите период'}
 				</p>
@@ -76,7 +69,11 @@ export default function Calendar({ selectedRange, onChange }: CalendarProps) {
 						<DayPicker
 							locale={ru}
 							mode='range'
-							selected={selectedRange}
+							selected={
+								dateRange?.from
+									? { from: dateRange.from, to: dateRange.to || undefined }
+									: undefined
+							}
 							onSelect={handleSelect}
 							numberOfMonths={2}
 							pagedNavigation
