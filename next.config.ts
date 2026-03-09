@@ -1,8 +1,6 @@
-import { NextConfig } from 'next'
-
-const nextConfig: NextConfig = {
+const nextConfig = {
 	output: 'standalone',
 	reactStrictMode: true,
 }
 
-export default nextConfig
+module.exports = nextConfig
