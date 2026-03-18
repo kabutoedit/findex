@@ -22,12 +22,9 @@ import {
 
 export default function SourcesPage() {
 	const [search, setSearch] = useState('')
-	const [refreshTrigger, setRefreshTrigger] = useState(0)
 
 	const [allSources, setAllSources] = useState<string[]>([])
 	const [activeSource, setActiveSource] = useState<string | null>(null)
-
-	const handleRefresh = () => setRefreshTrigger(prev => prev + 1)
 
 	const formatSourceName = (name: string) => {
 		return name.replace(/\.com|\.gov\.kg|\.org|\.ru/gi, '')

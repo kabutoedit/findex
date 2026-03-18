@@ -13,10 +13,6 @@ export default function ToneFilters() {
 		'позитив' | 'негатив' | 'нейтрально' | null
 	>(null)
 
-	const [refreshTrigger, setRefreshTrigger] = useState(0)
-
-	const handleRefresh = () => setRefreshTrigger(prev => prev + 1)
-
 	return (
 		<div className={styles.Page}>
 			<div className={styles.left}>
@@ -52,15 +48,11 @@ export default function ToneFilters() {
 								<NegativeSVG /> Негатив
 							</button>
 						</div>
-						<DeleteBtn onSuccess={handleRefresh} />
+						<DeleteBtn />
 					</div>
 				</div>
 
-				<Message
-					search={search}
-					refreshTrigger={0}
-					forceTone={filterTone || undefined}
-				/>
+				<Message search={search} forceTone={filterTone || undefined} />
 			</div>
 
 			<Filters search={search} setSearch={setSearch} />
