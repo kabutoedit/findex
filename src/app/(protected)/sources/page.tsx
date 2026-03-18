@@ -61,7 +61,7 @@ export default function SourcesPage() {
 
 					<div style={{ display: 'flex', gap: '10px', alignItems: 'end' }}>
 						<ExportExel />
-						<DeleteBtn onSuccess={handleRefresh} />
+						<DeleteBtn />
 					</div>
 				</div>
 
@@ -85,7 +85,6 @@ export default function SourcesPage() {
 
 				<Message
 					search={search}
-					refreshTrigger={refreshTrigger}
 					forceSource={activeSource || undefined}
 					onDataLoaded={handleDataLoaded}
 				/>

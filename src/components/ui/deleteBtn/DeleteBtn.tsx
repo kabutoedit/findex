@@ -4,6 +4,10 @@ import { useMessagesStore } from '@/src/store/useMessages.store'
 import { useLockBodyScroll } from '@/src/hooks/useLockBodyScroll'
 import { TrashIcon } from '@/public/icons'
 
+interface DeleteBtnProps {
+	onSuccess?: () => void
+}
+
 export default function DeleteBtn() {
 	const [isOpen, setIsOpen] = useState(false)
 
