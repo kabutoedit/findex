@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import styles from './TopNegativeAuthors.module.scss'
 import AccordionSort from '../ui/accordionSort/AccordionSort'
+import { MessageType } from '../../types/types'
 
 interface Author {
 	author: string
@@ -9,6 +10,7 @@ interface Author {
 	negative_count: number
 	last_negative_at: string
 	avatar_url?: string
+	messages: MessageType
 }
 
 const formatLastActivity = (dateStr: string) => {

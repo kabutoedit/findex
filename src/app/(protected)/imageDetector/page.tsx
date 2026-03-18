@@ -44,10 +44,23 @@ export default function ImageDetector() {
 		const fetchData = async () => {
 			setLoading(true)
 
+			const formatDate = (date: Date) => {
+				const pad = (n: number) => n.toString().padStart(2, '0')
+
+				return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(
+					date.getDate()
+				)}`
+			}
+
 			try {
 				const params: Record<string, string | number> = { brand_id: brandID }
-				if (dateRange.from) params.from = dateRange.from
-				if (dateRange.to) params.to = dateRange.to
+				if (dateRange.from) {
+					params.from = formatDate(dateRange.from)
+				}
+
+				if (dateRange.to) {
+					params.to = formatDate(dateRange.to)
+				}
 
 				const [seriesRes, authorsRes] = await Promise.all([
 					api.get('/api/analytics/negative-series', {
@@ -61,7 +74,6 @@ export default function ImageDetector() {
 				])
 
 				setAuthors(authorsRes.data.items)
-				console.log(seriesRes)
 
 				const rawSeries = seriesRes.data.points || []
 				const processedSeries: SeriesPoint[] = rawSeries.map((item: any) => {
@@ -107,6 +119,8 @@ export default function ImageDetector() {
 		return () => controller.abort()
 	}, [brandID, dateRange.from, dateRange.to])
 
+	console.log(authors)
+
 	return (
 		<div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
 			<div className={styles.imageDetector}>
@@ -134,7 +148,7 @@ export default function ImageDetector() {
 				</div>
 			</div>
 
-			<TopNegativeAuthors authors={authors} />
+			<TopNegativeAuthors authors={authors as any} />
 		</div>
 	)
 }
