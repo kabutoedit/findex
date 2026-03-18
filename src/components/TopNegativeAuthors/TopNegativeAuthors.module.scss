@@ -1,0 +1,109 @@
+.authorsSection {
+	height: 343px;
+	border-radius: 10px;
+	box-shadow: 2px 2px 16.1px 0px #0000000d;
+	background-color: #fff;
+	margin: 50px 40px 40px 20px;
+	padding: 30px 0 17px 0;
+
+	.authorsHeader {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		border-bottom: 0.5px solid #c5c5c5;
+		padding: 0 30px;
+		padding-bottom: 30px;
+
+		.authorsTitle {
+			margin: 0;
+			font-weight: 600;
+			font-size: 28px;
+			line-height: 100%;
+		}
+	}
+
+	.authorsGrid {
+		display: flex;
+		gap: 10px;
+		padding: 22px 29px;
+
+		.authorCard {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+
+			height: 210px;
+			border-radius: 10px;
+			background: #ffffff;
+			border: 1px solid #d5d6d9cc;
+			box-shadow: 2px 2px 4px 0px #0000001a;
+			padding: 12px 25px 0 25px;
+
+			.upside {
+				display: flex;
+				gap: 10px;
+				padding-bottom: 10px;
+				border-bottom: 0.5px solid #c5c5c5;
+
+				.avatarWrapper {
+					width: 40px;
+					height: 40px;
+
+					img {
+						width: 100%;
+						border-radius: 50%;
+					}
+				}
+
+				.namePlatform {
+					display: flex;
+					flex-direction: column;
+
+					strong {
+						font-weight: 600;
+						font-size: 18px;
+					}
+
+					a {
+						font-weight: 500;
+						font-size: 12px;
+						color: #455369;
+					}
+				}
+			}
+
+			.authorInfo {
+				display: flex;
+				flex-direction: column;
+				gap: 10px;
+
+				.stats {
+					font-weight: 500;
+					font-size: 14px;
+					color: #455369;
+
+					strong {
+						font-weight: 600;
+						font-size: 15px;
+					}
+				}
+			}
+
+			.expandBtn {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: 5px;
+				margin-left: -25px;
+				margin-right: -25px;
+				width: calc(100% + 50px);
+				height: 45px;
+				background: #d5d6d966;
+				border: none;
+
+				font-weight: 500;
+				font-size: 18px;
+			}
+		}
+	}
+}

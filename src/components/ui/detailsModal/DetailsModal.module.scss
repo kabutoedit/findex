@@ -12,64 +12,132 @@
 }
 
 .modalContent {
-	background: white;
-	width: 90%;
-	max-width: 800px;
-	max-height: 90vh;
-	padding: 30px;
-	border-radius: 8px;
+	background: #f4f4f4;
+
+	width: 871px;
+	// height: 720px;
+	border-radius: 10px;
+	box-sizing: border-box;
+
+	padding: 30px 50px;
 	position: relative;
 	overflow-y: auto;
 	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .modalHeader {
-	display: flex;
-	justify-content: space-between;
 	font-size: 14px;
 	color: #666;
 	margin-bottom: 15px;
 
-	.authorName {
-		color: #2d8bff;
-		text-decoration: none;
-		margin: 0 10px;
-		cursor: pointer;
+	.sourceInfo {
+		display: flex;
+		align-items: center;
+		margin-bottom: 17px;
+
+		.authorName {
+			color: #2d8bff;
+			text-decoration: none;
+			margin: 0 10px;
+			cursor: pointer;
+		}
+		.sourceName {
+			margin-left: 5px;
+
+			font-weight: 500;
+			font-size: 16px;
+			color: #254573;
+		}
+
+		.msgType {
+			text-transform: lowercase;
+			font-weight: 500;
+			font-size: 16px;
+			line-height: 100%;
+			margin-left: 5px;
+		}
 	}
-	.sourceName {
-		font-weight: bold;
-		color: #333;
-		margin-right: 10px;
+
+	.dateInfo {
+		display: flex;
+		align-items: center;
+		font-weight: 500;
+		font-size: 16px;
+		color: #767575;
+
+		span {
+			width: 1px;
+			display: block;
+			background-color: #34547d;
+			height: 13px;
+			margin: 0 7px;
+		}
 	}
 }
 
 .modalBody {
-	margin: 20px 0;
-	line-height: 1.6;
+	background: #ffffff;
+	border-radius: 10px;
+	box-shadow: -5px 6px 8.5px 0px #2e436e0d;
+
+	font-weight: 500;
 	font-size: 16px;
-}
+	color: #767575;
+	padding: 15px 50px 25px 30px;
 
-.modalFooter {
-	border-top: 1px solid #eee;
-	padding-top: 15px;
-	font-size: 14px;
-	color: #888;
-
-	a {
-		color: #2d8bff;
-		word-break: break-all;
-		cursor: pointer;
+	.fullText {
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 20px;
+		color: #000000;
+		margin-top: 5px;
 	}
 }
 
-.closeBtn {
-	position: absolute;
-	top: 10px;
-	right: 10px;
-	font-size: 24px;
-	background: none;
-	border: none;
-	cursor: pointer;
+.moreInfo {
+	display: flex;
+	justify-content: space-between;
+	.actions {
+		display: flex;
+		gap: 21px;
+		padding-top: 20px;
+		padding-bottom: 20px;
+
+		.action {
+			display: flex;
+			align-items: center;
+			gap: 4px;
+
+			p {
+				margin: 0;
+			}
+		}
+	}
+
+	.changes {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+	}
+}
+
+.modalFooter {
+	font-weight: 500;
+	font-size: 16px;
+	color: #767575;
+
+	.span {
+		font-weight: 500;
+		font-size: 16px;
+		color: #767575;
+	}
+
+	a {
+		color: #34547d;
+
+		word-break: break-all;
+		cursor: pointer;
+	}
 }
 
 .audienceCount {
@@ -80,9 +148,4 @@
 .sourceInfo {
 	display: flex;
 	align-items: center;
-}
-
-.span {
-	font-weight: bold;
-	color: #333;
 }

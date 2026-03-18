@@ -1,38 +1,38 @@
 .modalContent {
 	position: absolute;
 	top: 85px;
-	right: 0;
-	background: linear-gradient(90.24deg, #273242 51.48%, #344258 100%);
-	border: 1px solid rgba(255, 255, 255, 0.1);
-	padding: 20px;
-	border-radius: 12px;
-	text-align: center;
-	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-	width: max-content;
-	min-width: 200px;
+	right: 5px;
+	width: 184px;
+	height: 139px;
+	border-radius: 10px;
 	z-index: 1000;
+	background: #ffffff;
+	overflow: hidden;
 
-	p {
-		color: #fff;
-		font-size: 14px;
-		margin-bottom: 15px;
-		font-weight: 500;
-		white-space: nowrap;
+	.profile {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 7px;
+		height: 50%;
+		background: #273242;
+		color: #ffffff;
+		font-weight: 600;
+		font-size: 22px;
+		line-height: 100%;
 	}
 
-	button {
-		background: #2d8bff;
-		color: #fff;
-		border: none;
-		padding: 8px 20px;
-		border-radius: 6px;
-		cursor: pointer;
+	.logOut {
+		color: #ff383c;
 		font-weight: 600;
-		width: 100%;
+		font-size: 22px;
+		line-height: 100%;
+		height: 50%;
 
-		&:hover {
-			opacity: 0.9;
-		}
+		display: flex;
+		align-items: center;
+		padding-left: 20px;
+		gap: 10px;
 	}
 }
 

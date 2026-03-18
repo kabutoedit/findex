@@ -107,7 +107,7 @@ export default function Filters({ search, setSearch }: FiltersProps) {
 
 	const renderGroup = (
 		title: string,
-		items: string[],
+		items: any[],
 		key: keyof typeof selected
 	) => {
 		if (!items.length) return null
@@ -116,17 +116,24 @@ export default function Filters({ search, setSearch }: FiltersProps) {
 			<div className={styles.group}>
 				<h3 className={styles.title}>{title}</h3>
 
-				{items.map(item => (
-					<label key={item} className={styles.label}>
-						<input
-							type='checkbox'
-							className={styles.checkbox}
-							checked={selected[key].has(item)}
-							onChange={() => toggle(key, item)}
-						/>
-						{item}
-					</label>
-				))}
+				{items.map((item, index) => {
+					const isObject = typeof item === 'object'
+
+					const value = isObject ? item.value : item
+					const label = isObject ? item.label : item
+
+					return (
+						<label key={`${value}-${index}`} className={styles.label}>
+							<input
+								type='checkbox'
+								className={styles.checkbox}
+								checked={selected[key].has(value)}
+								onChange={() => toggle(key, value)}
+							/>
+							{label}
+						</label>
+					)
+				})}
 			</div>
 		)
 	}

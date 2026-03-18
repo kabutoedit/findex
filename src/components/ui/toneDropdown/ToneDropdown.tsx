@@ -4,6 +4,7 @@ import { MessageType } from '../../../types/types'
 import { api } from '@/src/lib/api'
 import { PositiveSVG, NeutralSVG, NegativeSVG } from '../../../../public/icons'
 import { createPortal } from 'react-dom'
+import { useMessagesStore } from '../../../store/useMessages.store'
 
 type ToneDropdownProps = {
 	tone: MessageType['tone']
@@ -27,6 +28,7 @@ export default function ToneDropdown({
 		null
 	)
 	const buttonRef = useRef<HTMLDivElement>(null)
+	const updateTone = useMessagesStore(state => state.updateTone)
 
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -58,13 +60,12 @@ export default function ToneDropdown({
 	const handleSelect = async (newTone: MessageType['tone']) => {
 		setIsOpen(false)
 		if (newTone === tone) return
+		console.log(newTone)
 
 		try {
-			onToneChange(externalId, newTone)
-			await api.patch(`/api/messages/${externalId}`, { tone: newTone })
+			await updateTone(externalId, newTone)
 		} catch (err) {
 			console.error('Ошибка при смене тональности', err)
-			alert('Не удалось сохранить изменение')
 		}
 	}
 

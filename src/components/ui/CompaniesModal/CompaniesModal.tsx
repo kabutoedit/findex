@@ -30,7 +30,6 @@ export default function CompaniesModal() {
 				setLoading(true)
 				const { data } = await api.get('/api/brands/my')
 				setCompanies(data)
-				console.log(data)
 
 				if (data.length > 0 && !brandID) {
 					setBrandID(data[0].id)

@@ -1,14 +1,40 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styles from './Header.module.scss'
+import { api } from '@/src/lib/api'
 import ProfileNavBar from '../ui/profileNavBar/ProfileNavBar'
 import { useLockBodyScroll } from '@/src/hooks/useLockBodyScroll'
 
+interface User {
+	id: number
+	username: string
+	subscription_plan: string
+}
+
 export default function Header() {
 	const [isOpen, setIsOpen] = useState(false)
+	const [loading, setLoading] = useState(false)
+	const [error, setError] = useState('')
+	const [data, setData] = useState<User | null>(null)
 	useLockBodyScroll(isOpen)
 
 	const toggleModal = () => setIsOpen(!isOpen)
+
+	useEffect(() => {
+		const fetchCompanies = async () => {
+			try {
+				setLoading(true)
+				const { data } = await api.get('/api/me')
+				setData(data)
+			} catch (err) {
+				setError('Ошибка загрузки брендов')
+			} finally {
+				setLoading(false)
+			}
+		}
+
+		fetchCompanies()
+	}, [])
 
 	return (
 		<header className={styles.header}>
@@ -40,7 +66,7 @@ export default function Header() {
 					src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
 					alt='profilePicture'
 				/>
-				<h3 className={styles.name}>Анастасия</h3>
+				<h3 className={styles.name}>{data?.username}</h3>
 			</div>
 
 			{isOpen && <ProfileNavBar toggleModal={toggleModal} />}

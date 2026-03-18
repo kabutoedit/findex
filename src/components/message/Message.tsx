@@ -21,7 +21,6 @@ type MessageProps = {
 	forceSource?: string
 	forceTone?: string
 	search: string
-	refreshTrigger: number
 	brandId?: number
 	itemsPerPage?: number
 	onDataLoaded?: (messages: MessageType[]) => void
@@ -31,12 +30,11 @@ export function Message({
 	forceSource,
 	forceTone,
 	search,
-	refreshTrigger,
 	brandId,
 	itemsPerPage = 30,
 	onDataLoaded,
 }: MessageProps) {
-	const { selectedIds, toggle } = useMessagesStore()
+	const { selectedIds, toggle, refreshTrigger } = useMessagesStore()
 	const {
 		countries,
 		tone: storeTone,
@@ -59,9 +57,6 @@ export function Message({
 	const TEXT_LIMIT = 120
 
 	const activeBrandId = brandId || storeBrandID
-	if (!activeBrandId) {
-		console.warn('Brand ID не определён!')
-	}
 
 	useEffect(() => {
 		if (!activeBrandId) return
@@ -83,8 +78,6 @@ export function Message({
 				if (forceSource) params.source = forceSource
 				if (forceTone) params.tone = forceTone
 
-				console.log('Запрос к API', params)
-
 				const activeRange = dateRange || dateRange
 				if (activeRange?.from) {
 					const pad = (n: number) => n.toString().padStart(2, '0')
@@ -98,7 +91,6 @@ export function Message({
 				}
 
 				const { data } = await api.get('/api/messages', { params })
-				console.log(data)
 
 				const items = data.items || []
 				setMessages(items)

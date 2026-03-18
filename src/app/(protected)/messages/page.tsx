@@ -10,10 +10,6 @@ import ExportExel from '@/src/components/ui/exportExel/ExportExel'
 export default function Home() {
 	const [search, setSearch] = useState('')
 
-	const [refreshTrigger, setRefreshTrigger] = useState(0)
-
-	const handleRefresh = () => setRefreshTrigger(prev => prev + 1)
-
 	return (
 		<div className={styles.Page}>
 			<div className={styles.left}>
@@ -22,11 +18,11 @@ export default function Home() {
 
 					<div style={{ display: 'flex', gap: '10px', alignItems: 'end' }}>
 						<ExportExel />
-						<DeleteBtn onSuccess={handleRefresh} />
+						<DeleteBtn />
 					</div>
 				</div>
 
-				<Message search={search} refreshTrigger={refreshTrigger} />
+				<Message search={search} />
 			</div>
 
 			<Filters search={search} setSearch={setSearch} />
