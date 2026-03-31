@@ -76,8 +76,8 @@
 .overlay {
 	position: absolute;
 	right: 0;
-	top: 4px;
-	height: 87%;
+	top: 0;
+	height: 90%;
 	box-sizing: border-box;
 	background: linear-gradient(
 		280.98deg,
@@ -114,4 +114,9 @@
 	height: 100%;
 	color: #9ca3af;
 	font-size: 14px;
+}
+
+.tooltip {
+	position: relative !important;
+	z-index: 1000 !important;
 }

@@ -1,0 +1,149 @@
+.calendar {
+	border: 1px solid #d5d6d999;
+	box-shadow: 2px 3px 4.7px 0px #34547d08;
+	background-color: #fff;
+	width: 252px;
+	height: 44px;
+	border-radius: 6px;
+	padding: 10px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	box-sizing: border-box;
+	cursor: pointer;
+
+	p {
+		font-weight: 500;
+		font-size: 18px;
+		line-height: 100%;
+	}
+}
+
+.select {
+	position: absolute;
+	// top: 180px;
+	top: calc(100% + 50px);
+	z-index: 1000;
+	width: 860px;
+	border-radius: 8px;
+	box-shadow: 0px 0px 20px 10px rgba(0, 0, 0, 0.05);
+	background-color: #fff;
+	padding: 36px 56px 40px 56px;
+	box-sizing: border-box;
+	left: 0;
+
+	:global(.rdp-root) {
+		--rdp-accent-color: #000;
+		--rdp-accent-background-color: #000;
+		--rdp-range_middle-background-color: #e5e5e5;
+
+		--rdp-day-height: 40px;
+		--rdp-day-width: 40px;
+		--rdp-day-radius: 8px;
+
+		--rdp-day_button-width: 48px;
+		--rdp-day_button-height: 48px;
+
+		font-family: inherit;
+	}
+
+	:global(.calendar-day) {
+		width: 48px !important;
+		height: 48px !important;
+		max-width: 48px;
+		max-height: 48px;
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 100%;
+		text-align: center;
+	}
+
+	:global(.month_caption) {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: 16px;
+	}
+
+	:global(.caption-label) {
+		text-transform: capitalize;
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 100%;
+		text-align: center;
+	}
+
+	:global(.weeks) {
+		display: flex;
+		flex-direction: column;
+		gap: 3px;
+	}
+
+	:global(.weekdays) {
+		display: block;
+		color: rgba(133, 133, 133, 1);
+		text-transform: uppercase;
+	}
+	:global(.rdp-weekdays) {
+		position: relative;
+		z-index: 1;
+	}
+
+	:global(.rdp-nav) {
+		z-index: 1;
+	}
+	:global(.weekday) {
+		width: 48px;
+		height: 48px;
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 100%;
+		text-align: center;
+	}
+	:global(.months) {
+		display: flex;
+		justify-content: space-between;
+	}
+}
+
+.overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 1000;
+}
+
+.modalOverlay {
+	position: fixed;
+	inset: 0;
+	z-index: 999;
+	background: transparent;
+}
+
+.upgradeText {
+	margin-top: 16px;
+	text-align: center;
+	font-size: 14px;
+	color: #999;
+}
+.lockOverlay {
+	position: absolute;
+	inset: 0;
+	top: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(255, 255, 255, 0.6);
+	pointer-events: none;
+}
+
+.lockOverlay p {
+	width: 260px;
+	font-weight: 400;
+	font-size: 20px;
+	line-height: 100%;
+	text-align: center;
+}
+
+.calendarWrapper {
+	position: relative;
+}

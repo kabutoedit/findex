@@ -4,23 +4,22 @@ import { useState } from 'react'
 import styles from './Accordion.module.scss'
 
 interface AccordionProps {
-	selected: 'day' | 'week' | 'month'
-	onChange: (value: 'day' | 'week' | 'month') => void
+	sortingBy: string
+	setSortingBy: (value: string) => void
+	options: { value: string; label: string }[]
 }
 
-export default function Accordion({ selected, onChange }: AccordionProps) {
+export default function Accordion({
+	options,
+	sortingBy,
+	setSortingBy,
+}: AccordionProps) {
 	const [open, setOpen] = useState(false)
-
-	const options: { label: string; value: 'day' | 'week' | 'month' }[] = [
-		{ label: 'По дням', value: 'day' },
-		{ label: 'По неделям', value: 'week' },
-		{ label: 'По месяцам', value: 'month' },
-	]
 
 	return (
 		<div className={styles.dropdown}>
 			<div className={styles.header} onClick={() => setOpen(prev => !prev)}>
-				{options.find(o => o.value === selected)?.label || 'Выберите'}{' '}
+				{options.find(o => o.value === sortingBy)?.label || 'Выберите'}{' '}
 				<svg
 					style={open ? { transform: 'rotate(180deg)' } : {}}
 					width='19'
@@ -44,10 +43,10 @@ export default function Accordion({ selected, onChange }: AccordionProps) {
 						<div
 							key={option.value}
 							className={`${styles.option} ${
-								selected === option.value ? styles.active : ''
+								sortingBy === option.value ? styles.active : ''
 							}`}
 							onClick={() => {
-								onChange(option.value)
+								setSortingBy(option.value)
 								setOpen(false)
 							}}
 						>

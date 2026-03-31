@@ -1,0 +1,197 @@
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background: rgba(0, 0, 0, 0.5);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1000;
+}
+
+.modal {
+	width: 871px;
+	// height: 720px;
+	border-radius: 10px;
+	padding: 35px 50px 0;
+	background: #f4f4f4;
+	box-sizing: border-box;
+}
+
+.authorRow {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	margin-bottom: 20px;
+	flex-shrink: 0;
+}
+
+.avatar {
+	width: 52px;
+	height: 52px;
+	border-radius: 50%;
+	background: #d5dfe8;
+	overflow: hidden;
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	span {
+		font-size: 18px;
+		font-weight: 600;
+		color: #254573;
+	}
+}
+
+.authorInfo {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+}
+
+.authorName {
+	font-weight: 600;
+	font-size: 16px;
+	color: #273242;
+	line-height: 100%;
+}
+
+.authorSub {
+	font-weight: 500;
+	font-size: 14px;
+	color: #767575;
+
+	strong {
+		color: #111;
+		font-weight: 700;
+	}
+}
+
+.messageList {
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding-right: 4px;
+
+	&::-webkit-scrollbar {
+		width: 4px;
+	}
+	&::-webkit-scrollbar-track {
+		background: transparent;
+	}
+	&::-webkit-scrollbar-thumb {
+		background: #c5c5c5;
+		border-radius: 4px;
+	}
+}
+
+.empty {
+	text-align: center;
+	color: #aaa;
+	font-size: 14px;
+	padding: 32px 0;
+}
+
+.messageCard {
+	background: #ffffff;
+	border-radius: 10px;
+	box-shadow: -5px 6px 8.5px 0px #2e436e0d;
+	padding: 15px 30px 20px;
+	box-shadow: -5px 6px 8.5px 0px #2e436e0d;
+}
+
+.cardHeader {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.datetime {
+	display: flex;
+	align-items: center;
+	font-weight: 500;
+	font-size: 14px;
+	color: #767575;
+
+	.dateSep {
+		width: 1px;
+		display: block;
+		background-color: #34547d;
+		height: 13px;
+		margin: 0 7px;
+	}
+}
+
+.cardRight {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	flex-shrink: 0;
+}
+
+.sourceLabel {
+	font-weight: 500;
+	font-size: 14px;
+	color: #254573;
+	background: #eaf1fb;
+	border-radius: 4px;
+	padding: 2px 8px;
+	white-space: nowrap;
+}
+
+.externalLink {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	border-radius: 6px;
+	color: #767575;
+	text-decoration: none;
+	transition: color 0.15s, background 0.15s;
+	flex-shrink: 0;
+}
+
+.messageTitle {
+	font-weight: 500;
+	font-size: 15px;
+	color: #254573;
+	margin: 0 0 5px;
+}
+
+.messageText {
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 20px;
+	color: #000000;
+	margin: 0;
+	white-space: pre-line;
+}
+
+.expandLink {
+	font-weight: 400;
+	font-size: 12px;
+	line-height: 20px;
+	color: #2d8bff;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
+.overlay {
+	animation: fadeIn 0.2s ease;
+}
+.modal {
+	animation: slideUp 0.22s ease;
+}
