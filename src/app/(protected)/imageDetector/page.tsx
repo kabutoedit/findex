@@ -42,7 +42,7 @@ const formatDate = (date: Date) => {
 export default function ImageDetector() {
 	const { brandID, dateRange } = useFiltersStore()
 	const [sortingBy, setSortingBy] = useState('day')
-	const tariff: 'basic' | 'standard' | 'vip' = 'basic'
+	const tariff = 'standard' as 'basic' | 'standard' | 'vip'
 
 	const params: Record<string, any> = {
 		brand_id: brandID,
