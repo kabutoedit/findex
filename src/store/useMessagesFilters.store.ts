@@ -27,7 +27,7 @@ export const useFiltersStore = create<FiltersState>(set => ({
 	source: [],
 	sourceType: [],
 	brandID: 0,
-	tariff: '' as Tariff | '',
+	tariff: 'basic',
 
 	dateRange: {
 		from: null,
