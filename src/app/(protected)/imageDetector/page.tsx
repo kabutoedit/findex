@@ -56,6 +56,7 @@ export default function ImageDetector() {
 			fetchNegativeSeries({
 				...params,
 				group_by: sortingBy,
+				// ...((tariff as Tariff) === 'vip' && { include_forecast: true }),
 				...((tariff as Tariff) === 'vip' && { include_forecast: true }),
 			}),
 		enabled: !!brandID,
