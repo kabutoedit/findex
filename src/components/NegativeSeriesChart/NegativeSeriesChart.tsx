@@ -1,11 +1,10 @@
 'use client'
-
-import { useEffect, useRef, useState, useMemo } from 'react'
 import styles from './NegativeSeriesChart.module.scss'
-import { useFiltersStore } from '@/src/store/useMessagesFilters.store'
-import { SeriesPoint, SeriesResponseType } from '@/src/types/types'
+import { useEffect, useRef, useState, useMemo } from 'react'
+import { useFiltersStore } from '@/store/useMessagesFilters.store'
+import { SeriesPoint, SeriesResponseType, Tariff } from '@/types/types'
 import { useQuery } from '@tanstack/react-query'
-import { fetchNegativeSeries } from '../../lib/api'
+import { fetchNegativeSeries } from '@/app/api/api'
 import {
 	Area,
 	AreaChart,
@@ -19,7 +18,7 @@ import {
 interface NegativeSeriesChartProps {
 	series: SeriesPoint[]
 	loading: boolean
-	tariff: 'basic' | 'standard' | 'vip'
+	tariff: Tariff
 	sortingBy: string
 	brandId: number
 }
@@ -136,14 +135,12 @@ export default function NegativeSeriesChart({
 			sourceData = series
 		}
 
-		if (isInitialLoad && tariff !== 'vip') {
+		if (isInitialLoad && (tariff === 'basic' || tariff === 'standard')) {
 			const last = sourceData[sourceData.length - 1]
-
 			if (!last?.date) {
 				setChartData(sourceData)
 				return
 			}
-
 			const fakePoints: SeriesPoint[] = Array.from({ length: 14 }, (_, i) => {
 				const fDate = addDays(new Date(last.date), i + 1)
 				return {
@@ -200,12 +197,6 @@ export default function NegativeSeriesChart({
 		{ length: Math.ceil((maxValue + step) / step) + 1 },
 		(_, i) => i * step
 	)
-
-	const lastActualIndex = chartData.findLastIndex(p => p.kind === 'actual')
-	const splitPercent =
-		chartData.length > 1
-			? Math.round((lastActualIndex / (chartData.length - 1)) * 100)
-			: 100
 
 	return (
 		<div className={styles.chartWrapper}>
@@ -335,40 +326,6 @@ export default function NegativeSeriesChart({
 									)
 								}}
 							/>
-
-							{tariff === 'vip' && (
-								<Area
-									type='linear'
-									dataKey='predicted_count'
-									stroke='#E16D1A'
-									strokeWidth={2}
-									strokeDasharray='4 4'
-									fill='none'
-									connectNulls={false}
-									dot={(props: any) => {
-										if (props.value === null) return <g key={props.key} />
-										return (
-											<circle
-												cx={props.cx}
-												cy={props.cy}
-												r={2}
-												fill='#E16D1A'
-											/>
-										)
-									}}
-									activeDot={(props: any) => {
-										if (props.value === null) return <g key={props.key} />
-										return (
-											<circle
-												cx={props.cx}
-												cy={props.cy}
-												r={4}
-												fill='#E16D1A'
-											/>
-										)
-									}}
-								/>
-							)}
 						</AreaChart>
 					</ResponsiveContainer>
 				)}

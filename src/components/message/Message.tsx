@@ -1,27 +1,26 @@
 'use client'
-
-import { useState, useEffect, useMemo } from 'react'
 import styles from './Message.module.scss'
-import { useMessagesStore } from '../../store/useMessages.store'
-import { useFiltersStore } from '../../store/useMessagesFilters.store'
-import { api } from '@/src/lib/api'
-import BaseFilters from '../ui/baseFilters/BaseFilters'
-import ToneDropdown from '../ui/toneDropdown/ToneDropdown'
-import DetailsModal from '../ui/detailsModal/DetailsModal'
+import { useState, useEffect, useMemo } from 'react'
+import { useMessagesStore } from '@/store/useMessages.store'
+import { useFiltersStore } from '@/store/useMessagesFilters.store'
+import { fetchMessages } from '@/app/api/api'
+import BaseFilters from '@/components/ui/baseFilters/BaseFilters'
+import ToneDropdown from '@/components/ui/toneDropdown/ToneDropdown'
+import DetailsModal from '@/components/ui/detailsModal/DetailsModal'
 import {
 	AudienceIcon,
 	RepostIcon,
 	LikeIcon,
 	EyeIcon,
 	CommentIcon,
-} from '../../../public/icons'
+} from '../icons/icons'
 import { MessageType } from '../../types/types'
+import { useQuery } from '@tanstack/react-query'
 
 type MessageProps = {
 	forceSource?: string
 	forceTone?: string
 	search: string
-	brandId?: number
 	itemsPerPage?: number
 	onDataLoaded?: (messages: MessageType[]) => void
 }
@@ -30,96 +29,74 @@ export function Message({
 	forceSource,
 	forceTone,
 	search,
-	brandId,
 	itemsPerPage = 30,
 	onDataLoaded,
 }: MessageProps) {
-	const { selectedIds, toggle, refreshTrigger } = useMessagesStore()
+	const { selectedIds, toggle } = useMessagesStore()
 	const {
 		countries,
 		tone: storeTone,
 		source: storeSource,
 		sourceType,
 		dateRange,
-		brandID: storeBrandID,
+		brandID,
 	} = useFiltersStore()
 
-	const [messages, setMessages] = useState<MessageType[]>([])
-	const [loading, setLoading] = useState(false)
-	const [error, setError] = useState('')
 	const [sortBy, setSortBy] = useState<string>('date')
 	const [currentPage, setCurrentPage] = useState(1)
 	const [selectedMessage, setSelectedMessage] = useState<MessageType | null>(
 		null
 	)
+	const { refreshTrigger } = useMessagesStore()
 
 	const closeModal = () => setSelectedMessage(null)
 	const TEXT_LIMIT = 120
 
-	const activeBrandId = brandId || storeBrandID
+	const messagesQuery = useQuery<MessageType[]>({
+		queryKey: [
+			'sorting-by',
+			brandID,
+			search,
+			countries,
+			storeTone,
+			storeSource,
+			sourceType,
+			dateRange,
+			forceSource,
+			forceTone,
+			refreshTrigger,
+		],
+		queryFn: () => {
+			const params: any = { brand_id: brandID }
+			if (search.trim()) params.q = search
+			if (countries.length) params.country = countries.join(',')
+			if (storeTone.length) params.tone = storeTone.join(',')
+			if (storeSource.length) params.source = storeSource.join(',')
+			if (sourceType.length) params.source_type = sourceType.join(',')
+			if (forceSource) params.source = forceSource
+			if (forceTone) params.tone = forceTone
+			if (dateRange?.from) {
+				const pad = (n: number) => n.toString().padStart(2, '0')
+				const formatDate = (d: Date) =>
+					`${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`
+				params.from = formatDate(dateRange.from)
+				params.to = dateRange.to
+					? formatDate(dateRange.to)
+					: formatDate(dateRange.from)
+			}
+			return fetchMessages(params).then(data => {
+				return data.items
+			})
+		},
+		enabled: !!brandID,
+	})
+
+	const [messages, setMessages] = useState<MessageType[]>([])
 
 	useEffect(() => {
-		if (!activeBrandId) return
-
-		const fetchMessages = async () => {
-			if (!activeBrandId) return
-
-			try {
-				setLoading(true)
-				setError('')
-
-				const params: any = { brand_id: activeBrandId }
-				if (search.trim()) params.q = search
-				if (countries.length) params.country = countries.join(',')
-				if (storeTone.length) params.tone = storeTone.join(',')
-				if (storeSource.length) params.source = storeSource.join(',')
-				if (sourceType.length) params.source_type = sourceType.join(',')
-
-				if (forceSource) params.source = forceSource
-				if (forceTone) params.tone = forceTone
-
-				const activeRange = dateRange || dateRange
-				if (activeRange?.from) {
-					const pad = (n: number) => n.toString().padStart(2, '0')
-					const formatDate = (d: Date) =>
-						`${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`
-
-					params.from = formatDate(activeRange.from)
-					params.to = activeRange.to
-						? formatDate(activeRange.to)
-						: formatDate(activeRange.from)
-				}
-
-				const { data } = await api.get('/api/messages', { params })
-
-				const items = data.items || []
-				setMessages(items)
-				onDataLoaded?.(items)
-				setCurrentPage(1)
-			} catch (err) {
-				setError('Ошибка загрузки сообщений')
-				console.error(err)
-			} finally {
-				setLoading(false)
-			}
-		}
-
-		fetchMessages()
-	}, [
-		activeBrandId,
-		refreshTrigger,
-		search,
-		countries,
-		storeTone,
-		storeSource,
-		sourceType,
-		dateRange?.from?.toISOString(),
-		dateRange?.to?.toISOString(),
-		dateRange?.from?.toISOString(),
-		dateRange?.to?.toISOString(),
-		forceSource,
-		forceTone,
-	])
+		if (messagesQuery.data) setMessages(messagesQuery.data)
+		if (messagesQuery.data && onDataLoaded) onDataLoaded(messagesQuery.data)
+	}, [messagesQuery.data, onDataLoaded])
 
 	const processedMessages = useMemo(() => {
 		const filtered = messages.filter(msg => {
@@ -188,7 +165,7 @@ export function Message({
 			default:
 				return copy
 		}
-	}, [messages, search, dateRange, dateRange, sortBy])
+	}, [messages, search, dateRange, sortBy])
 
 	const totalPages = Math.ceil(processedMessages.length / itemsPerPage)
 	const currentItems = processedMessages.slice(
@@ -196,7 +173,7 @@ export function Message({
 		(currentPage - 1) * itemsPerPage + itemsPerPage
 	)
 
-	useEffect(() => setCurrentPage(1), [search, dateRange, dateRange, sortBy])
+	useEffect(() => setCurrentPage(1), [search, dateRange, sortBy])
 
 	const highlightText = (text: string, search: string) => {
 		if (!search.trim()) return text
@@ -221,7 +198,6 @@ export function Message({
 
 	return (
 		<>
-			{error && <p>{error}</p>}
 			<BaseFilters onChange={setSortBy} />
 			<div className={styles.list}>
 				{currentItems.map(msg => {

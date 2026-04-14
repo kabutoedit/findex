@@ -14,11 +14,18 @@
 		align-items: center;
 		gap: 13px;
 
-		img {
+		.img {
 			width: 49px;
 			height: 49px;
 			border: 2px solid rgba(255, 255, 255, 1);
 			border-radius: 50%;
+			overflow: hidden;
+
+			img {
+				object-fit: cover;
+				height: 100%;
+				width: 100%;
+			}
 		}
 
 		.name {

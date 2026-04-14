@@ -2,19 +2,19 @@
 
 import styles from '../style.module.scss'
 import { useState } from 'react'
-import NegativeSeriesChart from '../../../components/NegativeSeriesChart/NegativeSeriesChart'
-import TopNegativeAuthors from '../../../components/TopNegativeAuthors/TopNegativeAuthors'
-import Accordion from '@/src/components/ui/accordion/Accordion'
-import SecondCalendar from '@/src/components/ui/secondCalendar/SecondCalendar'
-import { Author, SeriesPoint, SortingOptions } from '@/src/types/types'
-import { useFiltersStore } from '../../../store/useMessagesFilters.store'
+import NegativeSeriesChart from '@/components/negativeSeriesChart/NegativeSeriesChart'
+import TopNegativeAuthors from '@/components/topNegativeAuthors/TopNegativeAuthors'
+import Accordion from '@/components/ui/graphSorting/GraphSorting'
+import SecondCalendar from '@/components/ui/secondCalendar/SecondCalendar'
+import { Author, SeriesPoint } from '@/types/types'
+import { useFiltersStore } from '@/store/useMessagesFilters.store'
 import { useQuery } from '@tanstack/react-query'
 import {
 	fetchNegativeSeries,
 	fetchNegativeAuthorsFeed,
 	fetchSortingBy,
-} from '../../../lib/api'
-import { SeriesResponseType } from '@/src/types/types'
+} from '../../api/api'
+import { SeriesResponseType } from '@/types/types'
 
 interface AuthorsResponseType {
 	items: Author[]
@@ -40,9 +40,8 @@ const formatDate = (date: Date) => {
 }
 
 export default function ImageDetector() {
-	const { brandID, dateRange } = useFiltersStore()
+	const { brandID, dateRange, tariff } = useFiltersStore()
 	const [sortingBy, setSortingBy] = useState('day')
-	const tariff = 'standard' as 'basic' | 'standard' | 'vip'
 
 	const params: Record<string, any> = {
 		brand_id: brandID,
@@ -52,6 +51,7 @@ export default function ImageDetector() {
 
 	const seriesQuery = useQuery<SeriesResponseType>({
 		queryKey: ['negative-series', params, sortingBy],
+
 		queryFn: () =>
 			fetchNegativeSeries({
 				...params,
@@ -60,6 +60,9 @@ export default function ImageDetector() {
 			}),
 		enabled: !!brandID,
 	})
+
+	console.log(seriesQuery.data)
+	console.log(params)
 
 	const authorsQuery = useQuery<AuthorsResponseType>({
 		queryKey: ['negative-authors', params],
@@ -125,7 +128,6 @@ export default function ImageDetector() {
 			</div>
 
 			<TopNegativeAuthors authors={authors} />
-
 			{loading && <div style={{ marginTop: 16 }}>Loading...</div>}
 			{error && <div style={{ marginTop: 16 }}>Ошибка при загрузке данных</div>}
 		</div>

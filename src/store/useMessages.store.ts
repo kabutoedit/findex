@@ -1,6 +1,6 @@
 import { create } from 'zustand'
-import { api } from '../lib/api'
-import { MessageType } from '../types/types'
+import { api } from '@/app/api/api'
+import { MessageType } from '@/types/types'
 
 interface MessagesState {
 	selectedIds: string[]

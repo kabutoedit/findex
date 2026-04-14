@@ -18,10 +18,10 @@ import {
 } from 'date-fns'
 
 import styles from './SecondCalendar.module.scss'
-import { useLockBodyScroll } from '@/src/hooks/useLockBodyScroll'
-import { useFiltersStore } from '../../../store/useMessagesFilters.store'
+import { useLockBodyScroll } from '@/hooks/useLockBodyScroll'
+import { useFiltersStore } from '@/store/useMessagesFilters.store'
+import { Tariff } from '@/types/types'
 
-type Tariff = 'basic' | 'standard' | 'vip'
 type BlockReason = 'upgrade-standard' | 'upgrade-vip' | null
 
 type SelectionState =

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import styles from './Accordion.module.scss'
+import styles from './GraphSorting.module.scss'
 
 interface AccordionProps {
 	sortingBy: string

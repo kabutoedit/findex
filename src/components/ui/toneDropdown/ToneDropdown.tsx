@@ -1,8 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import styles from './ToneDropdown.module.scss'
 import { MessageType } from '../../../types/types'
-import { api } from '@/src/lib/api'
-import { PositiveSVG, NeutralSVG, NegativeSVG } from '../../../../public/icons'
+import { PositiveSVG, NeutralSVG, NegativeSVG } from '../../icons/icons'
 import { createPortal } from 'react-dom'
 import { useMessagesStore } from '../../../store/useMessages.store'
 
@@ -60,10 +59,10 @@ export default function ToneDropdown({
 	const handleSelect = async (newTone: MessageType['tone']) => {
 		setIsOpen(false)
 		if (newTone === tone) return
-		console.log(newTone)
 
 		try {
 			await updateTone(externalId, newTone)
+			onToneChange(externalId, newTone)
 		} catch (err) {
 			console.error('Ошибка при смене тональности', err)
 		}

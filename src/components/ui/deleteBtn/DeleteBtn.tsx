@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import styles from './DeleteBtn.module.scss'
-import { useMessagesStore } from '@/src/store/useMessages.store'
-import { useLockBodyScroll } from '@/src/hooks/useLockBodyScroll'
-import { TrashIcon } from '@/public/icons'
+import { useMessagesStore } from '@/store/useMessages.store'
+import { useLockBodyScroll } from '@/hooks/useLockBodyScroll'
+import { TrashIcon } from '@/components/icons/icons'
 
 interface DeleteBtnProps {
 	onSuccess?: () => void

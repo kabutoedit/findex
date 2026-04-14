@@ -1,12 +1,11 @@
 'use client'
-import { Message } from '@/src/components/message/Message'
 import styles from '../style.module.scss'
-import Calendar from '@/src/components/ui/calendar/Calendar'
-import Filters from '@/src/components/filters/Filters'
-import { useState, useMemo } from 'react'
-
-import ExportExel from '@/src/components/ui/exportExel/ExportExel'
-import DeleteBtn from '@/src/components/ui/deleteBtn/DeleteBtn'
+import { useState } from 'react'
+import { Message } from '@/components/message/Message'
+import Calendar from '@/components/ui/calendar/Calendar'
+import Filters from '@/components/filters/Filters'
+import ExportExel from '@/components/ui/exportExel/ExportExel'
+import DeleteBtn from '@/components/ui/deleteBtn/DeleteBtn'
 
 import {
 	TelegramIcon,
@@ -18,7 +17,7 @@ import {
 	OkIcon,
 	VkIcon,
 	YouTubeIcon,
-} from '@/public/icons'
+} from '@/components/icons/icons'
 
 export default function SourcesPage() {
 	const [search, setSearch] = useState('')

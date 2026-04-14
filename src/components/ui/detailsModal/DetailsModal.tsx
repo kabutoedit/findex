@@ -1,8 +1,6 @@
 import React from 'react'
-import { useMessagesStore } from '../../../store/useMessages.store'
-import { MessageType } from '../../../types/types'
-
-import { api } from '@/src/lib/api'
+import { useMessagesStore } from '@/store/useMessages.store'
+import { MessageType } from '@/types/types'
 import styles from './DetailsModal.module.scss'
 import {
 	EyeIcon,
@@ -19,7 +17,7 @@ import {
 	TikTokIcon,
 	ThreadsIcon,
 	YouTubeIcon,
-} from '@/public/icons'
+} from '@/components/icons/icons'
 
 type DetailsModalProps = {
 	selectedMessage: MessageType | null

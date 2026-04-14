@@ -1,11 +1,13 @@
 import { create } from 'zustand'
+import { Tariff } from '@/types/types'
 
-export interface FiltersState {
+interface FiltersState {
 	countries: string[]
 	tone: string[]
 	source: string[]
 	sourceType: string[]
 	brandID: number
+	tariff: Tariff
 
 	dateRange: {
 		from: Date | null
@@ -16,6 +18,7 @@ export interface FiltersState {
 	setDateRange: (range: { from: Date | null; to: Date | null }) => void
 	resetFilters: () => void
 	setBrandID: (brandID: number) => void
+	setTariff: (tariff: 'basic' | 'standard' | 'vip') => void
 }
 
 export const useFiltersStore = create<FiltersState>(set => ({
@@ -24,11 +27,14 @@ export const useFiltersStore = create<FiltersState>(set => ({
 	source: [],
 	sourceType: [],
 	brandID: 0,
+	tariff: '',
 
 	dateRange: {
 		from: null,
 		to: null,
 	},
+
+	setTariff: tariff => set({ tariff }),
 
 	setBrandID: brandID =>
 		set({

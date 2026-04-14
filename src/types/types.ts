@@ -51,3 +51,15 @@ export interface SortingOptions {
 		label: string
 	}[]
 }
+
+export interface MeData {}
+
+export type Tariff = 'basic' | 'standard' | 'vip' | ''
+
+export interface ProfileData {
+	avatar_url: string | null
+	first_name: string
+	last_name: string
+	subscription_plan: Tariff
+	full_name: string
+}

@@ -1,13 +1,11 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useAuthStore } from '../../store/auth.store'
 import { useState } from 'react'
 import styles from './style.module.scss'
-import { api } from '@/src/lib/api'
+import { api } from '@/app/api/api'
 
 export default function LoginPage() {
-	const login = useAuthStore(s => s.login)
 	const router = useRouter()
 	const [userName, setUserName] = useState('')
 	const [password, setPassword] = useState('')
@@ -30,7 +28,6 @@ export default function LoginPage() {
 			localStorage.setItem('access', data.access)
 			localStorage.setItem('refresh', data.refresh)
 
-			login()
 			document.cookie = `auth=${data.access}; path=/`
 			router.push('/messages')
 			setError('')

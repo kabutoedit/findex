@@ -1,10 +1,9 @@
 'use client'
-
-import { useState, useEffect } from 'react'
-import Search from '../ui/search/Search'
 import styles from './Filters.module.scss'
-import { api } from '@/src/lib/api'
-import { useFiltersStore } from '../../store/useMessagesFilters.store'
+import { useState, useEffect } from 'react'
+import Search from '@/components/ui/search/Search'
+import { api } from '@/app/api/api'
+import { useFiltersStore } from '@/store/useMessagesFilters.store'
 
 interface FilterMetadata {
 	countries: string[]

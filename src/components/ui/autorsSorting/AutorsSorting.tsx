@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import styles from './AccordionSort.module.scss'
+import styles from './AutorsSorting.module.scss'
 
 interface AccordionSortProps {
 	selected: 'quantity' | 'date'

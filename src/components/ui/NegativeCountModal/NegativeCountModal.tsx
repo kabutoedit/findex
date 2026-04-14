@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styles from './NegativeCountModal.module.scss'
-import { MessageType } from '../../../types/types'
-import DetailsModal from '../detailsModal/DetailsModal'
+import { MessageType } from '@/types/types'
+import DetailsModal from '@/components/ui/detailsModal/DetailsModal'
 
 interface Author {
 	author: string

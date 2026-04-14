@@ -1,8 +1,8 @@
 'use client'
 
 import styles from './ExportExel.module.scss'
-import { api } from '@/src/lib/api'
-import { useFiltersStore } from '../../../store/useMessagesFilters.store'
+import { api } from '@/app/api/api'
+import { useFiltersStore } from '@/store/useMessagesFilters.store'
 
 export default function ExportExel() {
 	const { countries, tone, source, sourceType, dateRange, brandID } =

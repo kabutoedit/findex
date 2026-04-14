@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from 'react'
 import styles from './CompaniesModal.module.scss'
-import { api } from '@/src/lib/api'
-import { useLockBodyScroll } from '@/src/hooks/useLockBodyScroll'
-import { useFiltersStore } from '../../../store/useMessagesFilters.store'
+import { fetchMyBrands } from '@/app/api/api'
+import { useLockBodyScroll } from '@/hooks/useLockBodyScroll'
+import { useFiltersStore } from '@/store/useMessagesFilters.store'
+import { useQuery } from '@tanstack/react-query'
 
 interface Company {
 	id: number
@@ -14,35 +15,24 @@ interface Company {
 
 export default function CompaniesModal() {
 	const [isOpen, setIsOpen] = useState(false)
-	const [companies, setCompanies] = useState<Company[]>([])
-	const [loading, setLoading] = useState(false)
-	const [error, setError] = useState('')
-
 	const { brandID, setBrandID } = useFiltersStore()
 
 	useLockBodyScroll(isOpen)
 
+	const { data } = useQuery<Company[]>({
+		queryKey: ['my-brands'],
+		queryFn: () => fetchMyBrands(),
+	})
+
+	const companies = data || []
+
 	const currentCompany = companies.find(c => c.id === brandID) || companies[0]
 
 	useEffect(() => {
-		const fetchCompanies = async () => {
-			try {
-				setLoading(true)
-				const { data } = await api.get('/api/brands/my')
-				setCompanies(data)
-
-				if (data.length > 0 && !brandID) {
-					setBrandID(data[0].id)
-				}
-			} catch (err) {
-				setError('Ошибка загрузки брендов')
-			} finally {
-				setLoading(false)
-			}
+		if (currentCompany) {
+			setBrandID(currentCompany.id)
 		}
-
-		fetchCompanies()
-	}, [brandID, setBrandID])
+	}, [currentCompany, setBrandID])
 
 	const handleSelectCompany = (id: number) => {
 		setBrandID(id)
@@ -53,8 +43,6 @@ export default function CompaniesModal() {
 		<div className={styles.companiesModal}>
 			<div className={styles.currentCompany} onClick={() => setIsOpen(!isOpen)}>
 				<div className={styles.company}>
-					{loading && <p>Загрузка...</p>}
-					{error && <p>{error}</p>}
 					<h3>{currentCompany?.name}</h3>
 					<p>{currentCompany?.description}</p>
 				</div>
@@ -77,7 +65,7 @@ export default function CompaniesModal() {
 				</svg>
 			</div>
 
-			{isOpen && !loading && (
+			{isOpen && (
 				<div className={styles.modalOverlay} onClick={() => setIsOpen(false)}>
 					<div className={styles.companies} onClick={e => e.stopPropagation()}>
 						{companies.map(company => (

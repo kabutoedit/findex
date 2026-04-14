@@ -1,40 +1,24 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import styles from './Header.module.scss'
-import { api } from '@/src/lib/api'
-import ProfileNavBar from '../ui/profileNavBar/ProfileNavBar'
-import { useLockBodyScroll } from '@/src/hooks/useLockBodyScroll'
-
-interface User {
-	id: number
-	username: string
-	subscription_plan: string
-}
+import { fetchMe } from '@/app/api/api'
+import ProfileNavBar from '@/components/ui/profileNavBar/ProfileNavBar'
+import { useLockBodyScroll } from '@/hooks/useLockBodyScroll'
+import { useQuery } from '@tanstack/react-query'
+import { ProfileData } from '@/types/types'
 
 export default function Header() {
 	const [isOpen, setIsOpen] = useState(false)
-	const [loading, setLoading] = useState(false)
-	const [error, setError] = useState('')
-	const [data, setData] = useState<User | null>(null)
 	useLockBodyScroll(isOpen)
 
 	const toggleModal = () => setIsOpen(!isOpen)
 
-	useEffect(() => {
-		const fetchCompanies = async () => {
-			try {
-				setLoading(true)
-				const { data } = await api.get('/api/me')
-				setData(data)
-			} catch (err) {
-				setError('Ошибка загрузки брендов')
-			} finally {
-				setLoading(false)
-			}
-		}
+	const meQuery = useQuery({
+		queryKey: ['me'],
+		queryFn: () => fetchMe(),
+	})
 
-		fetchCompanies()
-	}, [])
+	const data: ProfileData = meQuery.data
 
 	return (
 		<header className={styles.header}>
@@ -62,11 +46,13 @@ export default function Header() {
 			</a>
 
 			<div className={styles.profile} onClick={toggleModal}>
-				<img
-					src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
-					alt='profilePicture'
-				/>
-				<h3 className={styles.name}>{data?.username}</h3>
+				<div className={styles.img}>
+					<img
+						src={data?.avatar_url || '/defaultProfilePicture.jpg'}
+						alt='profilePicture'
+					/>
+				</div>
+				<h3 className={styles.name}>{data?.full_name}</h3>
 			</div>
 
 			{isOpen && <ProfileNavBar toggleModal={toggleModal} />}

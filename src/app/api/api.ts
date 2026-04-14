@@ -62,3 +62,11 @@ export const fetchNegativeAuthorsFeed = (params: any) =>
 
 export const fetchSortingBy = (params: any) =>
 	api.get('/api/analytics/tone-series', { params }).then(res => res.data)
+
+export const fetchMe = () => api.get('/api/me').then(res => res.data)
+
+export const fetchMyBrands = () =>
+	api.get('/api/brands/my').then(res => res.data)
+
+export const fetchMessages = (params: any) =>
+	api.get('/api/messages', { params }).then(res => res.data)
