@@ -18,7 +18,7 @@ interface FiltersState {
 	setDateRange: (range: { from: Date | null; to: Date | null }) => void
 	resetFilters: () => void
 	setBrandID: (brandID: number) => void
-	setTariff: (tariff: 'basic' | 'standard' | 'vip') => void
+	setTariff: (tariff: Tariff) => void
 }
 
 export const useFiltersStore = create<FiltersState>(set => ({
@@ -34,7 +34,7 @@ export const useFiltersStore = create<FiltersState>(set => ({
 		to: null,
 	},
 
-	setTariff: (tariff: Tariff) => set({ tariff }),
+	setTariff: tariff => set({ tariff }),
 
 	setBrandID: brandID =>
 		set({

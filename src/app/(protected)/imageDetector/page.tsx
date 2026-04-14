@@ -6,7 +6,7 @@ import NegativeSeriesChart from '@/components/negativeSeriesChart/NegativeSeries
 import TopNegativeAuthors from '@/components/topNegativeAuthors/TopNegativeAuthors'
 import Accordion from '@/components/ui/graphSorting/GraphSorting'
 import SecondCalendar from '@/components/ui/secondCalendar/SecondCalendar'
-import { Author, SeriesPoint } from '@/types/types'
+import { Author, SeriesPoint, Tariff } from '@/types/types'
 import { useFiltersStore } from '@/store/useMessagesFilters.store'
 import { useQuery } from '@tanstack/react-query'
 import {
@@ -56,7 +56,7 @@ export default function ImageDetector() {
 			fetchNegativeSeries({
 				...params,
 				group_by: sortingBy,
-				...(tariff === 'vip' && { include_forecast: true }),
+				...((tariff as Tariff) === 'vip' && { include_forecast: true }),
 			}),
 		enabled: !!brandID,
 	})
