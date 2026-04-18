@@ -59,14 +59,14 @@ export default function Profile() {
 
 	useEffect(() => {
 		if (data) {
-			setTariff(data.subscription_plan || 'basic')
+			setTariff(data.subscriptionPlan || 'basic')
 		}
 	}, [data, setTariff])
 
-	const [name, setName] = useState(data?.first_name || '')
+	const [name, setName] = useState(data?.firstName || '')
 	const [password, setPassword] = useState('')
 	const [confirmPassword, setConfirmPassword] = useState('')
-	const [lastName, setLastName] = useState(data?.last_name || '')
+	const [lastName, setLastName] = useState(data?.lastName || '')
 	const [avatar, setAvatar] = useState<File | null>(null)
 	const [avatarPreview, setAvatarPreview] = useState<string | null>(null)
 
@@ -112,7 +112,7 @@ export default function Profile() {
 					<img
 						src={
 							avatarPreview === null
-								? data?.avatar_url || '/defaultProfilePicture.jpg'
+								? data?.avatarUrl || '/defaultProfilePicture.jpg'
 								: avatarPreview
 						}
 						alt='profile picture'
@@ -139,7 +139,7 @@ export default function Profile() {
 				</div>
 				<div className={styles.passwordBlock}>
 					<p className={styles.subscription_plan}>
-						Тариф: <strong>{data.subscription_plan}</strong>{' '}
+						Тариф: <strong>{data.subscriptionPlan}</strong>{' '}
 					</p>
 					<div className={styles.inputsBlock}>
 						<label htmlFor='firstNameInput'>
@@ -148,7 +148,7 @@ export default function Profile() {
 								<input
 									id='firstNameInput'
 									type='text'
-									placeholder={data.first_name}
+									placeholder={data.firstName}
 									onChange={e => setName(e.target.value)}
 									value={name}
 								/>
@@ -162,7 +162,7 @@ export default function Profile() {
 								<input
 									id='lastNameInput'
 									type='text'
-									placeholder={data.last_name}
+									placeholder={data.lastName}
 									onChange={e => setLastName(e.target.value)}
 									value={lastName}
 								/>

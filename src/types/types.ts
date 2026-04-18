@@ -45,8 +45,9 @@ export interface SeriesResponseType {
 	}[]
 }
 
+// под вопросом
 export interface SortingOptions {
-	available_groupings: {
+	availableGroupings: {
 		value: string
 		label: string
 	}[]
@@ -57,9 +58,36 @@ export interface MeData {}
 export type Tariff = 'basic' | 'standard' | 'vip' | ''
 
 export interface ProfileData {
-	avatar_url: string | null
-	first_name: string
-	last_name: string
-	subscription_plan: Tariff
-	full_name: string
+	avatarUrl: string | null
+	firstName: string
+	lastName: string
+	subscriptionPlan: Tariff
+	fullName: string
+}
+
+export interface FilterMetadata {
+	countries: string[]
+	tones: string[]
+	sources: string[]
+	sourceTypes: string[]
+}
+
+export interface FiltersState {
+	countries: string[]
+	tones: string[]
+	sources: string[]
+	sourceTypes: string[]
+	brandID: number
+	tariff: Tariff
+
+	dateRange: {
+		from: Date | null
+		to: Date | null
+	}
+
+	setFilters: (filters: Partial<FiltersState>) => void
+	setDateRange: (range: { from: Date | null; to: Date | null }) => void
+	resetFilters: () => void
+	setBrandID: (brandID: number) => void
+	setTariff: (tariff: Tariff) => void
 }

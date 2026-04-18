@@ -48,11 +48,11 @@ export default function Header() {
 			<div className={styles.profile} onClick={toggleModal}>
 				<div className={styles.img}>
 					<img
-						src={data?.avatar_url || '/defaultProfilePicture.jpg'}
+						src={data?.avatarUrl || '/defaultProfilePicture.jpg'}
 						alt='profilePicture'
 					/>
 				</div>
-				<h3 className={styles.name}>{data?.full_name}</h3>
+				<h3 className={styles.name}>{data?.fullName}</h3>
 			</div>
 
 			{isOpen && <ProfileNavBar toggleModal={toggleModal} />}

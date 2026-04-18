@@ -1,3 +1,4 @@
+import { FilterMetadata } from '@/types/types'
 import axios from 'axios'
 import router from 'next/router'
 

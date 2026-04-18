@@ -35,9 +35,9 @@ export function Message({
 	const { selectedIds, toggle } = useMessagesStore()
 	const {
 		countries,
-		tone: storeTone,
-		source: storeSource,
-		sourceType,
+		tones: storeTone,
+		sources: storeSource,
+		sourceTypes,
 		dateRange,
 		brandID,
 	} = useFiltersStore()
@@ -60,7 +60,7 @@ export function Message({
 			countries,
 			storeTone,
 			storeSource,
-			sourceType,
+			sourceTypes,
 			dateRange,
 			forceSource,
 			forceTone,
@@ -72,7 +72,7 @@ export function Message({
 			if (countries.length) params.country = countries.join(',')
 			if (storeTone.length) params.tone = storeTone.join(',')
 			if (storeSource.length) params.source = storeSource.join(',')
-			if (sourceType.length) params.source_type = sourceType.join(',')
+			if (sourceTypes.length) params.source_type = sourceTypes.join(',')
 			if (forceSource) params.source = forceSource
 			if (forceTone) params.tone = forceTone
 			if (dateRange?.from) {
@@ -173,7 +173,7 @@ export function Message({
 		(currentPage - 1) * itemsPerPage + itemsPerPage
 	)
 
-	useEffect(() => setCurrentPage(1), [search, dateRange, sortBy])
+	// useEffect(() => setCurrentPage(1), [search, dateRange, sortBy])
 
 	const highlightText = (text: string, search: string) => {
 		if (!search.trim()) return text

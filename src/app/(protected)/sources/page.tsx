@@ -3,7 +3,7 @@ import styles from '../style.module.scss'
 import { useState } from 'react'
 import { Message } from '@/components/message/Message'
 import Calendar from '@/components/ui/calendar/Calendar'
-import Filters from '@/components/filters/Filters'
+import Filters from '@/components/filters/ui/Filters'
 import ExportExel from '@/components/ui/exportExel/ExportExel'
 import DeleteBtn from '@/components/ui/deleteBtn/DeleteBtn'
 
