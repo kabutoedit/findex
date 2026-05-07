@@ -1,23 +1,6 @@
 import { create } from 'zustand'
 import { api } from '@/app/api/api'
-import { MessageType } from '@/types/types'
-
-interface MessagesState {
-	selectedIds: string[]
-	loading: boolean
-	error: string | null
-	refreshTrigger: number
-
-	toggle: (id: string) => void
-	clearSelection: () => void
-	triggerRefresh: () => void
-	deleteMessages: (accessToken: string) => Promise<void>
-	deleteOne: (accessToken: string, id: string) => Promise<void>
-	updateTone: (
-		externalId: string,
-		newTone: MessageType['tone']
-	) => Promise<void>
-}
+import { MessagesState } from '@/types/types'
 
 export const useMessagesStore = create<MessagesState>((set, get) => ({
 	selectedIds: [],

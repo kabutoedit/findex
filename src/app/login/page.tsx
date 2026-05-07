@@ -31,7 +31,7 @@ export default function LoginPage() {
 			document.cookie = `auth=${data.access}; path=/`
 			router.push('/messages')
 			setError('')
-		} catch (error: any) {
+		} catch (error: string | any) {
 			if (error.response?.status === 401 || error.response?.status === 400) {
 				setError('Неверный логин или пароль')
 			} else {

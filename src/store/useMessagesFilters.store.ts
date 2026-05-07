@@ -3,7 +3,6 @@ import { FiltersState } from '@/types/types'
 
 export const useFiltersStore = create<FiltersState>(set => ({
 	countries: [],
-
 	tones: [],
 	sources: [],
 	sourceTypes: [],

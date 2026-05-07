@@ -1,29 +1,24 @@
 'use client'
 import styles from './Filters.module.scss'
 import { useEffect } from 'react'
-import Search from '@/components/ui/search/Search'
+import Search from '@/components/ui/search/ui/Search'
 import { useFiltersStore } from '@/store/useMessagesFilters.store'
-import { useQuery } from '@tanstack/react-query'
-import { fetchFilters } from '../api/filters.api'
 import { useFiltersLogic } from '../hooks/useFiltersLogic'
 import FilterGroup from './FilterGroup'
-
-type FiltersProps = {
-	search: string
-	setSearch: (value: string) => void
-}
+import { FiltersProps } from '../types/filtersTypes'
 
 export default function Filters({ search, setSearch }: FiltersProps) {
 	const { brandID, resetFilters } = useFiltersStore()
-	const { selected, toggle, resetInternal, applyFilters, hasActive } =
-		useFiltersLogic(resetFilters)
-
-	const { data, isLoading, error } = useQuery({
-		queryKey: ['filters', brandID],
-		queryFn: () => fetchFilters(brandID),
-		enabled: !!brandID,
-		staleTime: 1000 * 60 * 15,
-	})
+	const {
+		selected,
+		toggle,
+		resetInternal,
+		applyFilters,
+		hasActive,
+		isLoading,
+		error,
+		data,
+	} = useFiltersLogic(resetFilters)
 
 	useEffect(() => {
 		if (brandID) {
@@ -42,9 +37,23 @@ export default function Filters({ search, setSearch }: FiltersProps) {
 
 			<div className={styles.panel}>
 				<FilterGroup
+					title='Города'
+					items={data.cities}
+					groupKey='cities'
+					selected={selected}
+					toggle={toggle}
+				/>
+				<FilterGroup
 					title='Страны'
 					items={data.countries}
 					groupKey='countries'
+					selected={selected}
+					toggle={toggle}
+				/>
+				<FilterGroup
+					title='Языки'
+					items={data.langs}
+					groupKey='langs'
 					selected={selected}
 					toggle={toggle}
 				/>
@@ -64,7 +73,7 @@ export default function Filters({ search, setSearch }: FiltersProps) {
 				/>
 				<FilterGroup
 					title='Типы источников'
-					items={data.sourceTypes}
+					items={data.source_types}
 					groupKey='sourceTypes'
 					selected={selected}
 					toggle={toggle}

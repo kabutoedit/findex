@@ -1,17 +1,16 @@
 'use client'
 import styles from '../style.module.scss'
 import { useState } from 'react'
-import { Message } from '@/components/message/Message'
-import Calendar from '@/components/ui/calendar/Calendar'
-import DeleteBtn from '@/components/ui/deleteBtn/DeleteBtn'
+import Message from '@/components/message/ui/Message'
+import Calendar from '@/components/ui/calendar/ui/Calendar'
+import DeleteBtn from '@/components/ui/deleteBtn/ui/DeleteBtn'
 import Filters from '@/components/filters/ui/Filters'
 import { PositiveSVG, NegativeSVG, NeutralSVG } from '@/components/icons/icons'
+import { MessageType } from '@/types/types'
 
 export default function ToneFilters() {
 	const [search, setSearch] = useState('')
-	const [filterTone, setFilterTone] = useState<
-		'позитив' | 'негатив' | 'нейтрально' | null
-	>(null)
+	const [filterTone, setFilterTone] = useState<MessageType['tone']>(null)
 
 	return (
 		<div className={styles.Page}>

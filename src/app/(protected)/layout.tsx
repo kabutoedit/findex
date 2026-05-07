@@ -1,10 +1,11 @@
 'use client'
 
-import { fetchMe } from '@/app/api/api'
-import Header from '@/components/layout/Header'
-import NavBar from '@/components/layout/NavBar'
+import { fetchMe } from '@/components/layout/api/header.api'
+import Header from '@/components/layout/ui/Header'
+import NavBar from '@/components/layout/ui/NavBar'
 import { useEffect } from 'react'
 import { useFiltersStore } from '@/store/useMessagesFilters.store'
+import { useQuery } from '@tanstack/react-query'
 
 export default function ProtectedLayout({
 	children,
@@ -13,13 +14,15 @@ export default function ProtectedLayout({
 }) {
 	const { setTariff } = useFiltersStore()
 
+	const { data } = useQuery({
+		queryKey: ['subscriptionPlan'],
+		queryFn: fetchMe,
+		staleTime: 1000 * 60 * 15,
+	})
+
 	useEffect(() => {
-		fetchMe()
-			.then(data => {
-				setTariff(data.subscription_plan)
-			})
-			.catch(err => console.error(err))
-	}, [])
+		if (data?.subscription_plan) setTariff(data.subscription_plan)
+	}, [data, setTariff])
 
 	return (
 		<div className='app'>

@@ -1,11 +1,11 @@
 'use client'
 import styles from '../style.module.scss'
 import { useState } from 'react'
-import { Message } from '@/components/message/Message'
-import Calendar from '@/components/ui/calendar/Calendar'
-import DeleteBtn from '@/components/ui/deleteBtn/DeleteBtn'
+import Message from '@/components/message/ui/Message'
+import Calendar from '@/components/ui/calendar/ui/Calendar'
+import DeleteBtn from '@/components/ui/deleteBtn/ui/DeleteBtn'
 import Filters from '@/components/filters/ui/Filters'
-import ExportExel from '@/components/ui/exportExel/ExportExel'
+import ExportExcel from '@/components/ui/exportExcel/ui/ExportExcel'
 
 export default function Home() {
 	const [search, setSearch] = useState('')
@@ -17,7 +17,7 @@ export default function Home() {
 					<Calendar />
 
 					<div style={{ display: 'flex', gap: '10px', alignItems: 'end' }}>
-						<ExportExel />
+						<ExportExcel />
 						<DeleteBtn />
 					</div>
 				</div>

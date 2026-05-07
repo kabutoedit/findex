@@ -1,8 +1,18 @@
 import { useState } from 'react'
 import { useFiltersStore } from '@/store/useMessagesFilters.store'
+import { useQuery } from '@tanstack/react-query'
+import { fetchFilters } from '../api/filters.api'
 
 export const useFiltersLogic = (onReset: () => void) => {
 	const { setFilters } = useFiltersStore()
+	const brandID = useFiltersStore(state => state.brandID)
+
+	const { data, isLoading, error } = useQuery({
+		queryKey: ['filters', brandID],
+		queryFn: () => fetchFilters(brandID),
+		enabled: !!brandID,
+		staleTime: 1000 * 60 * 15,
+	})
 
 	const [selected, setSelected] = useState({
 		countries: new Set<string>(),
@@ -40,5 +50,14 @@ export const useFiltersLogic = (onReset: () => void) => {
 
 	const hasActive = Object.values(selected).some(set => set.size > 0)
 
-	return { selected, toggle, resetInternal, applyFilters, hasActive }
+	return {
+		selected,
+		toggle,
+		resetInternal,
+		applyFilters,
+		hasActive,
+		isLoading,
+		error,
+		data,
+	}
 }

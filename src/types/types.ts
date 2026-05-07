@@ -16,35 +16,6 @@ export type MessageType = {
 	message_type?: string
 }
 
-export interface Author {
-	author: string
-	author_url: string
-	negative_count: number
-	last_negative_at: string
-	avatar_url?: string
-	messages: MessageType[]
-}
-
-export interface SeriesPoint {
-	displayDate: string
-	negative_count: number
-	date: string
-	change_percent?: number
-	isFake?: boolean
-	kind?: 'actual' | 'predicted'
-}
-
-export interface SeriesResponseType {
-	points: {
-		bucket_start: string
-		negative_count?: number
-		count?: number
-		delta_percent?: number
-		bucket_label: string
-		kind?: 'actual' | 'predicted'
-	}[]
-}
-
 // под вопросом
 export interface SortingOptions {
 	availableGroupings: {
@@ -58,18 +29,11 @@ export interface MeData {}
 export type Tariff = 'basic' | 'standard' | 'vip' | ''
 
 export interface ProfileData {
-	avatarUrl: string | null
-	firstName: string
-	lastName: string
-	subscriptionPlan: Tariff
-	fullName: string
-}
-
-export interface FilterMetadata {
-	countries: string[]
-	tones: string[]
-	sources: string[]
-	sourceTypes: string[]
+	avatar_url: string | null
+	first_name: string
+	last_name: string
+	subscription_plan: Tariff
+	full_name: string
 }
 
 export interface FiltersState {
@@ -90,4 +54,30 @@ export interface FiltersState {
 	resetFilters: () => void
 	setBrandID: (brandID: number) => void
 	setTariff: (tariff: Tariff) => void
+}
+
+export interface Author {
+	author: string
+	author_url: string
+	negative_count: number
+	last_negative_at: string
+	avatar_url?: string
+	messages: MessageType[]
+}
+
+export interface MessagesState {
+	selectedIds: string[]
+	loading: boolean
+	error: string | null
+	refreshTrigger: number
+
+	toggle: (id: string) => void
+	clearSelection: () => void
+	triggerRefresh: () => void
+	deleteMessages: (accessToken: string) => Promise<void>
+	deleteOne: (accessToken: string, id: string) => Promise<void>
+	updateTone: (
+		externalId: string,
+		newTone: MessageType['tone']
+	) => Promise<void>
 }

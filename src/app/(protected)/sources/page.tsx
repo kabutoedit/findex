@@ -1,11 +1,11 @@
 'use client'
 import styles from '../style.module.scss'
 import { useState } from 'react'
-import { Message } from '@/components/message/Message'
-import Calendar from '@/components/ui/calendar/Calendar'
+import Message from '@/components/message/ui/Message'
+import Calendar from '@/components/ui/calendar/ui/Calendar'
 import Filters from '@/components/filters/ui/Filters'
-import ExportExel from '@/components/ui/exportExel/ExportExel'
-import DeleteBtn from '@/components/ui/deleteBtn/DeleteBtn'
+import ExportExcel from '@/components/ui/exportExcel/ui/ExportExcel'
+import DeleteBtn from '@/components/ui/deleteBtn/ui/DeleteBtn'
 
 import {
 	TelegramIcon,
@@ -18,6 +18,7 @@ import {
 	VkIcon,
 	YouTubeIcon,
 } from '@/components/icons/icons'
+import { MessageType } from '@/types/types'
 
 export default function SourcesPage() {
 	const [search, setSearch] = useState('')
@@ -29,12 +30,16 @@ export default function SourcesPage() {
 		return name.replace(/\.com|\.gov\.kg|\.org|\.ru/gi, '')
 	}
 
-	const handleDataLoaded = (messages: any[]) => {
-		if (allSources.length === 0) {
-			const sources = messages.map(m => m.source).filter(Boolean)
-			const unique = Array.from(new Set(sources)) as string[]
-			setAllSources(unique)
-		}
+	const handleDataLoaded = (messages: MessageType[]) => {
+		const sources = messages.map(m => m.source).filter(Boolean)
+		const unique = Array.from(new Set(sources)) as string[]
+
+		setAllSources(prev => {
+			if (JSON.stringify(prev) === JSON.stringify(unique)) {
+				return prev
+			}
+			return unique
+		})
 	}
 
 	const sourceIcons: Record<string, React.ReactNode> = {
@@ -56,7 +61,7 @@ export default function SourcesPage() {
 					<Calendar />
 
 					<div style={{ display: 'flex', gap: '10px', alignItems: 'end' }}>
-						<ExportExel />
+						<ExportExcel />
 						<DeleteBtn />
 					</div>
 				</div>

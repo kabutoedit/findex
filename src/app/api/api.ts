@@ -1,4 +1,3 @@
-import { FilterMetadata } from '@/types/types'
 import axios from 'axios'
 import router from 'next/router'
 
@@ -50,24 +49,3 @@ api.interceptors.response.use(
 		return Promise.reject(error)
 	}
 )
-
-export const fetchNegativeSeries = (params: any) =>
-	api.get('/api/analytics/negative-series', { params }).then(res => res.data)
-
-export const fetchNegativeAuthorsFeed = (params: any) =>
-	api
-		.get('/api/analytics/negative-authors-feed', {
-			params: { ...params, authors_limit: 3, per_author_limit: 5 },
-		})
-		.then(res => res.data)
-
-export const fetchSortingBy = (params: any) =>
-	api.get('/api/analytics/tone-series', { params }).then(res => res.data)
-
-export const fetchMe = () => api.get('/api/me').then(res => res.data)
-
-export const fetchMyBrands = () =>
-	api.get('/api/brands/my').then(res => res.data)
-
-export const fetchMessages = (params: any) =>
-	api.get('/api/messages', { params }).then(res => res.data)

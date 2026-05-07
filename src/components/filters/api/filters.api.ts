@@ -1,5 +1,5 @@
 import { api } from '@/app/api/api'
-import { FilterMetadata } from '@/types/types'
+import { FilterMetadata } from '../types/filtersTypes'
 
 export const fetchFilters = (brandID: number) =>
 	api

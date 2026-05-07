@@ -1,12 +1,5 @@
+import { FilterGroupProps } from '../types/filtersTypes'
 import styles from './Filters.module.scss'
-
-interface FilterGroupProps {
-	title: string
-	items: any[]
-	groupKey: string
-	selected: Record<string, Set<string>>
-	toggle: (group: any, value: string) => void
-}
 
 export default function FilterGroup({
 	title,
